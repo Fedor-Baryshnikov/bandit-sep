@@ -232,6 +232,7 @@ class ManagerTests(testtools.TestCase):
             self.manager.output_results(
                 lines, sev_level, conf_level, tmp_file, output_format
             )
+        print('fuck you')
         self.assertTrue(os.path.isfile(output_filename))
     
     @mock.patch("os.path.isdir")
@@ -407,3 +408,16 @@ class ManagerTests(testtools.TestCase):
                 [issue_a, issue_b], [issue_a, issue_b, issue_c]
             ),
         )
+
+# import sys
+# sys.path.append('/home/somebody/Software Engineering Processes/bandit-sep')
+# import custom_cov
+
+
+
+# custom_cov.print_coverage()
+
+# # Create an instance of the ManagerTests class
+
+
+# custom_cov.print_coverage()

@@ -3,16 +3,6 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 
-branch_coverage = {
-    "output_results_1": False,  # if branch for x > 0
-    "output_results_2": False,   # else branch
-    "output_results_3": False   # else branch
-}
-
-def print_coverage():
-    for branch, hit in branch_coverage.items():
-        print(f"{branch} was {'hit' if hit else 'not hit'}")
-
 
 import collections
 import fnmatch
@@ -34,6 +24,18 @@ from bandit.core import meta_ast as b_meta_ast
 from bandit.core import metrics
 from bandit.core import node_visitor as b_node_visitor
 from bandit.core import test_set as b_test_set
+
+
+branch_coverage = {
+    "output_results_1": False,  # if branch for x > 0
+    "output_results_2": False,   # else branch
+    "output_results_3": False   # else branch
+}
+
+def print_coverage():
+    for branch, hit in branch_coverage.items():
+        print(f"{branch} was {'hit' if hit else 'not hit'}")
+
 
 LOG = logging.getLogger(__name__)
 NOSEC_COMMENT = re.compile(r"#\s*nosec:?\s*(?P<tests>[^#]+)?#?")
@@ -175,6 +177,7 @@ class BanditManager:
             formatters_mgr = extension_loader.MANAGER.formatters_mgr
             if output_format not in formatters_mgr:
                 branch_coverage["output_results_1"] = True
+                print('hit1')
                 output_format = (
                     "screen"
                     if (
@@ -189,6 +192,7 @@ class BanditManager:
             report_func = formatter.plugin
             if output_format == "custom":
                 branch_coverage["output_results_2"] = True
+                print('hit2')
                 report_func(
                     self,
                     fileobj=output_file,
@@ -198,6 +202,7 @@ class BanditManager:
                 )
             else:
                 branch_coverage["output_results_3"] = True
+                print('hit3')
                 report_func(
                     self,
                     fileobj=output_file,
@@ -514,4 +519,18 @@ def _parse_nosec_comment(comment):
     return test_ids
 
 
+sys.path.append('/home/somebody/Software Engineering Processes/bandit-sep')
+
+import tests.unit.core.test_manager
+
+print_coverage()
+
+manager_tests_instance = tests.unit.core.test_manager.ManagerTests()
+
+manager_tests_instance.setUp()
+
+# Now call the test methods on this instance
+manager_tests_instance.test_output_results_custom_format()
+manager_tests_instance.test_output_results_invalid_format()
+manager_tests_instance.test_output_results_valid_format()
 print_coverage()
