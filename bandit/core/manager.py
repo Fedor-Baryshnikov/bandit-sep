@@ -61,6 +61,7 @@ class BanditManager:
             self.output_results(
                 lines, sev_level, conf_level, tmp_file, output_format
             )
+    
     def test_output_results_valid_format(self):
         # Test that output_results succeeds given a valid format
         temp_directory = '/home/somebody/Software Engineering Processes/bandit-sep'
@@ -73,6 +74,7 @@ class BanditManager:
             self.output_results(
                 lines, sev_level, conf_level, tmp_file, output_format
             )
+    
     def test_output_results_custom_format(self):
         # Test that output_results succeeds given a valid format
         temp_directory = '/home/somebody/Software Engineering Processes/bandit-sep'
@@ -561,9 +563,7 @@ def _parse_nosec_comment(comment):
     return test_ids
 
 
-sys.path.append('/home/somebody/Software Engineering Processes/bandit-sep')
 
-# import tests.unit.core.test_manager
 from bandit.core import config
 
 print_coverage()
