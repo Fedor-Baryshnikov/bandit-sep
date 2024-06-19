@@ -25,9 +25,9 @@ from bandit.core import metrics
 from bandit.core import node_visitor as b_node_visitor
 from bandit.core import test_set as b_test_set
 
-#=======================#
-# CUSTOM BRANCH COVERAGE
-#=======================#
+#========================#
+# CUSTOM BRANCH COVERAGE #
+#========================#
 branch_coverage = {
     "output_results_1": False,  # if branch for x > 0
     "output_results_2": False,   # else branch
@@ -37,9 +37,9 @@ branch_coverage = {
 def print_coverage():
     for branch, hit in branch_coverage.items():
         print(f"{branch} was {'hit' if hit else 'not hit'}")
-#=======================#
-# CUSTOM BRANCH COVERAGE
-#=======================#
+#========================#
+# CUSTOM BRANCH COVERAGE #
+#========================#
 
 LOG = logging.getLogger(__name__)
 NOSEC_COMMENT = re.compile(r"#\s*nosec:?\s*(?P<tests>[^#]+)?#?")
@@ -48,6 +48,44 @@ PROGRESS_THRESHOLD = 50
 
 
 class BanditManager:
+    
+    def test_output_results_invalid_format(self):
+        # Test that output_results succeeds given a valid format
+        temp_directory = '/home/somebody/Software Engineering Processes/bandit-sep'
+        lines = 5
+        sev_level = 1
+        conf_level = 1
+        output_filename = os.path.join(temp_directory, "_temp_output.txt")
+        output_format = "invalid"
+        with open(output_filename, "w") as tmp_file:
+            self.output_results(
+                lines, sev_level, conf_level, tmp_file, output_format
+            )
+    def test_output_results_valid_format(self):
+        # Test that output_results succeeds given a valid format
+        temp_directory = '/home/somebody/Software Engineering Processes/bandit-sep'
+        lines = 5
+        sev_level = 1
+        conf_level = 1
+        output_filename = os.path.join(temp_directory, "_temp_output.txt")
+        output_format = "valid"
+        with open(output_filename, "w") as tmp_file:
+            self.output_results(
+                lines, sev_level, conf_level, tmp_file, output_format
+            )
+    def test_output_results_custom_format(self):
+        # Test that output_results succeeds given a valid format
+        temp_directory = '/home/somebody/Software Engineering Processes/bandit-sep'
+        lines = 5
+        sev_level = 1
+        conf_level = 1
+        output_filename = os.path.join(temp_directory, "_temp_output.txt")
+        output_format = "custom"
+        with open(output_filename, "w") as tmp_file:
+            self.output_results(
+                lines, sev_level, conf_level, tmp_file, output_format
+            )
+        
     scope = []
 
     def __init__(
@@ -525,16 +563,15 @@ def _parse_nosec_comment(comment):
 
 sys.path.append('/home/somebody/Software Engineering Processes/bandit-sep')
 
-import tests.unit.core.test_manager
+# import tests.unit.core.test_manager
+from bandit.core import config
 
 print_coverage()
 
-manager_tests_instance = tests.unit.core.test_manager.ManagerTests()
-
-manager_tests_instance.setUp()
+manager_tests_instance = BanditManager(config=config.BanditConfig(), agg_type="file", debug=False, verbose=False)
 
 # Now call the test methods on this instance
 manager_tests_instance.test_output_results_custom_format()
-manager_tests_instance.test_output_results_invalid_format()
 manager_tests_instance.test_output_results_valid_format()
+manager_tests_instance.test_output_results_invalid_format()
 print_coverage()
