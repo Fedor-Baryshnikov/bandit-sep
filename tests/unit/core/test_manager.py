@@ -219,7 +219,21 @@ class ManagerTests(testtools.TestCase):
                 lines, sev_level, conf_level, tmp_file, output_format
             )
         self.assertTrue(os.path.isfile(output_filename))
-
+    
+    def test_output_results_custom_format(self):
+        # Test that output_results succeeds given a valid format
+        temp_directory = self.useFixture(fixtures.TempDir()).path
+        lines = 5
+        sev_level = constants.LOW
+        conf_level = constants.LOW
+        output_filename = os.path.join(temp_directory, "_temp_output.txt")
+        output_format = "custom"
+        with open(output_filename, "w") as tmp_file:
+            self.manager.output_results(
+                lines, sev_level, conf_level, tmp_file, output_format
+            )
+        self.assertTrue(os.path.isfile(output_filename))
+    
     @mock.patch("os.path.isdir")
     def test_discover_files_recurse_skip(self, isdir):
         isdir.return_value = True

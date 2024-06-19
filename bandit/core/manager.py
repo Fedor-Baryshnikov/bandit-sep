@@ -2,6 +2,18 @@
 # Copyright 2014 Hewlett-Packard Development Company, L.P.
 #
 # SPDX-License-Identifier: Apache-2.0
+
+branch_coverage = {
+    "output_results_1": False,  # if branch for x > 0
+    "output_results_2": False,   # else branch
+    "output_results_3": False   # else branch
+}
+
+def print_coverage():
+    for branch, hit in branch_coverage.items():
+        print(f"{branch} was {'hit' if hit else 'not hit'}")
+
+
 import collections
 import fnmatch
 import io
@@ -162,6 +174,7 @@ class BanditManager:
         try:
             formatters_mgr = extension_loader.MANAGER.formatters_mgr
             if output_format not in formatters_mgr:
+                branch_coverage["output_results_1"] = True
                 output_format = (
                     "screen"
                     if (
@@ -175,6 +188,7 @@ class BanditManager:
             formatter = formatters_mgr[output_format]
             report_func = formatter.plugin
             if output_format == "custom":
+                branch_coverage["output_results_2"] = True
                 report_func(
                     self,
                     fileobj=output_file,
@@ -183,6 +197,7 @@ class BanditManager:
                     template=template,
                 )
             else:
+                branch_coverage["output_results_3"] = True
                 report_func(
                     self,
                     fileobj=output_file,
@@ -497,3 +512,6 @@ def _parse_nosec_comment(comment):
                 test_ids.add(test_id)
 
     return test_ids
+
+
+print_coverage()
