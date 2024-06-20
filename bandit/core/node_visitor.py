@@ -13,9 +13,9 @@ LOG = logging.getLogger(__name__)
 
 # Branch coverage for visit(self, node) function
 branch_coverage = {
-    "visit_1": False,    # for visitor is Not None
-    "visit_2": False,    # for else
-    "visit 3": False     # for if self.debug
+    "branch_301": False,    # for visitor is Not None
+    "branch_302": False,    # for else
+    "branch_303": False     # for if self.debug
 }   
 
 # Function to print the coverage of branches
@@ -245,13 +245,13 @@ class BanditNodeVisitor:
         method = "visit_" + name
         visitor = getattr(self, method, None)
         if visitor is not None:
-            branch_coverage["visit_1"] = True
+            branch_coverage["branch_301"] = True
             if self.debug:
-                branch_coverage["visit 3"] = True
+                branch_coverage["branch_303"] = True
                 LOG.debug("%s called (%s)", method, ast.dump(node))
             visitor(node)
         else:
-            branch_coverage["visit_2"] = True
+            branch_coverage["branch_302"] = True
             self.update_scores(self.tester.run_tests(self.context, name))
 
     def post_visit(self, node):

@@ -19,9 +19,9 @@ LOG = logging.getLogger(__name__)
 
 # Branch coverage for get_path_for_function(f)
 branch_coverage = {
-    "get_path_for_function_1": False,   # for hasattr(f, "__func__")
-    "get_path_for_function_2": False,   # for hasattr(f, "__module__")
-    "get_path_for_function_3": False   # for else
+    "branch_305": False,   # for hasattr(f, "__func__")
+    "branch_306": False,   # for hasattr(f, "__module__")
+    "branch_307": False   # for else
 }
 
 # # MyClass is used for testing purporses (test case 1)
@@ -365,13 +365,13 @@ def get_path_for_function(f):
 # never be executed if there is if hasattr(f, "__module__") statement before it.
 
     if hasattr(f, "__func__"):
-        branch_coverage["get_path_for_function_1"] = True
+        branch_coverage["branch_305"] = True
         module_name = f.__func__.__module__
     elif hasattr(f, "__module__"):
-        branch_coverage["get_path_for_function_2"] = True
+        branch_coverage["branch_306"] = True
         module_name = f.__module__
     else:
-        branch_coverage["get_path_for_function_3"] = True
+        branch_coverage["branch_307"] = True
         LOG.warning("Cannot resolve file where %s is defined", f)
         return None
 
