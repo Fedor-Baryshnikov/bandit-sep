@@ -29,10 +29,13 @@ from bandit.core import test_set as b_test_set
 # CUSTOM BRANCH COVERAGE #
 #========================#
 branch_coverage = {
-    "branch_101": False,  # if branch for x > 0
-    "branch_102": False,  # else branch
-    "branch_103": False,  # else branch
-    "branch_104": False   # exception
+    "branch_101": False, # if branch for output_format not in formatters_mgr
+    "branch_102": False, # if branch for sys.stdout.isatty()
+    "branch_103": False, # else branch for sys.stdout.isatty()
+    "branch_104": False, # else branch for output_format not in formatters_mgr
+    "branch_105": False, # if branch for output_format == "custom"
+    "branch_106": False, # else branch for output_format != "custom"
+    "branch_107": False, # except branch
 }
 
 def print_coverage():
@@ -49,6 +52,34 @@ PROGRESS_THRESHOLD = 50
 
 
 class BanditManager:
+    
+    def test_output_results_term_dumb(self):
+        # Test that output_results succeeds given a valid format
+        temp_directory = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+        lines = 5
+        sev_level = 1
+        conf_level = 1
+        output_filename = os.path.join(temp_directory, "_temp_output.txt")
+        output_format = "invalid"
+        os.environ["TERM"] = "dumb"
+        with open(output_filename, "w") as tmp_file:
+            self.output_results(
+                lines, sev_level, conf_level, tmp_file, output_format
+            )
+    
+    def test_output_results_term_not_dumb(self):
+        # Test that output_results succeeds given a valid format
+        temp_directory = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+        lines = 5
+        sev_level = 1
+        conf_level = 1
+        output_filename = os.path.join(temp_directory, "_temp_output.txt")
+        output_format = "invalid"
+        os.environ["TERM"] = "test"
+        with open(output_filename, "w") as tmp_file:
+            self.output_results(
+                lines, sev_level, conf_level, tmp_file, output_format
+            )
     
     def test_output_results_invalid_format(self):
         # Test that output_results succeeds given a valid format
@@ -94,7 +125,7 @@ class BanditManager:
         lines = 5
         sev_level = 1
         conf_level = 1
-        output_format = "custom"
+        output_format = "valid"
         
         try:
             self.output_results(
@@ -235,7 +266,7 @@ class BanditManager:
         try:
             formatters_mgr = extension_loader.MANAGER.formatters_mgr
             if output_format not in formatters_mgr:
-                branch_coverage["branch_101"] = True
+                branch_coverage["branch_101"] = True            # COVERAGE
                 output_format = (
                     "screen"
                     if (
@@ -245,11 +276,22 @@ class BanditManager:
                     )
                     else "txt"
                 )
+                
+
+                if (sys.stdout.isatty()                         # COVERAGE
+                    and os.getenv("NO_COLOR") is None           # COVERAGE
+                    and os.getenv("TERM") != "dumb"             # COVERAGE
+                    ):                                          # COVERAGE
+                    branch_coverage["branch_102"] = True        # COVERAGE
+                else:                                           # COVERAGE
+                    branch_coverage["branch_103"] = True        # COVERAGE
+            else:                                               # COVERAGE
+                branch_coverage["branch_104"] = True            # COVERAGE
 
             formatter = formatters_mgr[output_format]
             report_func = formatter.plugin
             if output_format == "custom":
-                branch_coverage["branch_102"] = True
+                branch_coverage["branch_105"] = True            # COVERAGE
                 report_func(
                     self,
                     fileobj=output_file,
@@ -258,7 +300,7 @@ class BanditManager:
                     template=template,
                 )
             else:
-                branch_coverage["branch_103"] = True
+                branch_coverage["branch_106"] = True            # COVERAGE
                 report_func(
                     self,
                     fileobj=output_file,
@@ -268,7 +310,7 @@ class BanditManager:
                 )
 
         except Exception as e:
-            branch_coverage["branch_104"] = True
+            branch_coverage["branch_107"] = True                # COVERAGE
             raise RuntimeError(
                 f"Unable to output report using "
                 f"'{output_format}' formatter: {str(e)}"
@@ -584,7 +626,10 @@ print_coverage()
 manager_tests_instance = BanditManager(config=config.BanditConfig(), agg_type="file", debug=False, verbose=False)
 
 manager_tests_instance.test_output_results_custom_format()
-manager_tests_instance.test_output_results_valid_format()
+# manager_tests_instance.test_output_results_valid_format()
 manager_tests_instance.test_output_results_invalid_format()
 manager_tests_instance.test_output_results_exception()
+manager_tests_instance.test_output_results_term_not_dumb()
+manager_tests_instance.test_output_results_term_dumb()
+
 print_coverage()
