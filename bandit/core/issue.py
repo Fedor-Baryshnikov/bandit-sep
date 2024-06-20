@@ -9,7 +9,7 @@ from bandit.core import constants
 
 branches = {
     'self.fname == "<stdin>"': False,
-    # 'for line_num in range(1, lmin):': False
+    'for line_num in range(1, lmin)': False
 }
 
 def show_coverage():
@@ -202,7 +202,7 @@ class Issue:
             branches['self.fname == "<stdin>"'] = True
             self.fdata.seek(0)
             for line_num in range(1, lmin):
-                # branches['for line_num in range(1, lmin)'] = True
+                branches['for line_num in range(1, lmin)'] = True
                 self.fdata.readline()
 
         tmplt = "%i\t%s" if tabbed else "%i %s"
@@ -280,10 +280,9 @@ def _get_issue_instance(
     new_issue.test = "bandit_plugin"
     new_issue.fdata = file
     new_issue.test_id = "B999"
-    new_issue.lineno = 1
     new_issue.col_offset = 8
     new_issue.end_col_offset = 16
-    new_issue.lineno = 1
+    new_issue.lineno = 3
     new_issue.linerange = [1, 2]
 
     return new_issue
@@ -291,4 +290,8 @@ def _get_issue_instance(
 new_issue = _get_issue_instance()
 
 new_issue.get_code()
+
+for branch, hit in branches.items():
+    print(hit)
+
 show_coverage()
