@@ -12,6 +12,8 @@ import tempfile
 import testtools
 
 from bandit.core import utils as b_utils
+from bandit.core import node_visitor as b_node_visitor
+from unittest.mock import MagicMock
 
 
 def _touch(path):
@@ -282,6 +284,32 @@ class UtilTests(testtools.TestCase):
 
     def test_path_for_function_no_module(self):
         self.assertIsNone(b_utils.get_path_for_function(1))
+    
+    # Test for testing the first branch of the get_path_for_function function
+    def test_path_for_function_with_func(self):
+        function = MagicMock()
+        function.__func__ = MagicMock()
+        function.__func__.__code__ = "test"
+
+        path = b_utils.get_path_for_function(function)
+        self.assertEqual(path, sys.modules["test"].__file__)
+
+    # Test case 1 running the function with a bound method
+    def test_path_for_function_bound_method(self):
+        eg_class = MagicMock() 
+        result_1 = b_utils.get_path_for_function(eg_class)
+        self.assertIsNotNone(result_1)
+        
+    # Test case 2 running the function with a regular function
+    def test_path_for_function_regular_function(self):
+        example_function = MagicMock()
+        result_2 = b_utils.get_path_for_function(example_function)
+        self.assertIsNotNone(result_2)
+
+    # Test case 3 running the function with a non-function object
+    def test_path_for_function_non_function(self):
+        result_3 = b_utils.get_path_for_function(1)
+        self.assertIsNone(result_3)
 
     def test_escaped_representation_simple(self):
         res = b_utils.escaped_bytes_representation(b"ascii")
