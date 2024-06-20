@@ -29,10 +29,10 @@ from bandit.core import test_set as b_test_set
 # CUSTOM BRANCH COVERAGE #
 #========================#
 branch_coverage = {
-    "output_results_1": False,  # if branch for x > 0
-    "output_results_2": False,  # else branch
-    "output_results_3": False,  # else branch
-    "output_results_4": False   # exception
+    "branch_101": False,  # if branch for x > 0
+    "branch_102": False,  # else branch
+    "branch_103": False,  # else branch
+    "branch_104": False   # exception
 }
 
 def print_coverage():
@@ -52,7 +52,7 @@ class BanditManager:
     
     def test_output_results_invalid_format(self):
         # Test that output_results succeeds given a valid format
-        temp_directory = '/home/somebody/Software Engineering Processes/bandit-sep'
+        temp_directory = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
         lines = 5
         sev_level = 1
         conf_level = 1
@@ -65,7 +65,7 @@ class BanditManager:
     
     def test_output_results_valid_format(self):
         # Test that output_results succeeds given a valid format
-        temp_directory = '/home/somebody/Software Engineering Processes/bandit-sep'
+        temp_directory = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
         lines = 5
         sev_level = 1
         conf_level = 1
@@ -78,7 +78,7 @@ class BanditManager:
     
     def test_output_results_custom_format(self):
         # Test that output_results succeeds given a valid format
-        temp_directory = '/home/somebody/Software Engineering Processes/bandit-sep'
+        temp_directory = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
         lines = 5
         sev_level = 1
         conf_level = 1
@@ -235,7 +235,7 @@ class BanditManager:
         try:
             formatters_mgr = extension_loader.MANAGER.formatters_mgr
             if output_format not in formatters_mgr:
-                branch_coverage["output_results_1"] = True
+                branch_coverage["branch_101"] = True
                 output_format = (
                     "screen"
                     if (
@@ -249,7 +249,7 @@ class BanditManager:
             formatter = formatters_mgr[output_format]
             report_func = formatter.plugin
             if output_format == "custom":
-                branch_coverage["output_results_2"] = True
+                branch_coverage["branch_102"] = True
                 report_func(
                     self,
                     fileobj=output_file,
@@ -258,7 +258,7 @@ class BanditManager:
                     template=template,
                 )
             else:
-                branch_coverage["output_results_3"] = True
+                branch_coverage["branch_103"] = True
                 report_func(
                     self,
                     fileobj=output_file,
@@ -268,7 +268,7 @@ class BanditManager:
                 )
 
         except Exception as e:
-            branch_coverage["output_results_4"] = True
+            branch_coverage["branch_104"] = True
             raise RuntimeError(
                 f"Unable to output report using "
                 f"'{output_format}' formatter: {str(e)}"
