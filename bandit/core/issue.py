@@ -7,26 +7,26 @@ import bandit
 
 from bandit.core import constants
 
-branches = {
-    'self.fname == "<stdin>"': False,
-    'for line_num in range(1, lmin)': False
-}
+# branches = {
+#     'self.fname == "<stdin>"': False,
+#     'for line_num in range(1, lmin)': False
+# }
 
-def show_coverage():
-    branch_hit = 0
-    total_branches = 0
+# def show_coverage():
+#     branch_hit = 0
+#     total_branches = 0
 
-    for branch, hit in branches.items():
+#     for branch, hit in branches.items():
 
-        if hit:
-            branch_hit += 1
-            print(f"Branch '{branch}' was hit")
-        else:
-            print(f"Branch '{branch}' was not hit")
+#         if hit:
+#             branch_hit += 1
+#             print(f"Branch '{branch}' was hit")
+#         else:
+#             print(f"Branch '{branch}' was not hit")
 
-        total_branches += 1
+#         total_branches += 1
 
-    print(f"Branch coverage is {branch_hit * 100 / total_branches}%\n")
+#     print(f"Branch coverage is {branch_hit * 100 / total_branches}%\n")
 
 
 class Cwe:
@@ -199,10 +199,10 @@ class Issue:
         lmax = lmin + len(self.linerange) + max_lines - 1
 
         if self.fname == "<stdin>":
-            branches['self.fname == "<stdin>"'] = True
+            # branches['self.fname == "<stdin>"'] = True
             self.fdata.seek(0)
             for line_num in range(1, lmin):
-                branches['for line_num in range(1, lmin)'] = True
+                # branches['for line_num in range(1, lmin)'] = True
                 self.fdata.readline()
 
         tmplt = "%i\t%s" if tabbed else "%i %s"
@@ -268,30 +268,30 @@ def issue_from_dict(data):
     i.from_dict(data)
     return i
 
-file = open("example_data.txt", "r")
+# def _get_issue_instance(
+#     severity=bandit.MEDIUM,
+#     cwe=Cwe.MULTIPLE_BINDS,
+#     confidence=bandit.MEDIUM,
+# ):
+#     file = open("example_data.txt", "r")
 
-def _get_issue_instance(
-    severity=bandit.MEDIUM,
-    cwe=Cwe.MULTIPLE_BINDS,
-    confidence=bandit.MEDIUM,
-):
-    new_issue = Issue(severity, cwe, confidence, "Test issue")
-    new_issue.fname = "<stdin>"
-    new_issue.test = "bandit_plugin"
-    new_issue.fdata = file
-    new_issue.test_id = "B999"
-    new_issue.col_offset = 8
-    new_issue.end_col_offset = 16
-    new_issue.lineno = 3
-    new_issue.linerange = [1, 2]
+#     new_issue = Issue(severity, cwe, confidence, "Test issue")
+#     new_issue.fname = "<stdin>"
+#     new_issue.test = "bandit_plugin"
+#     new_issue.fdata = file
+#     new_issue.test_id = "B999"
+#     new_issue.col_offset = 8
+#     new_issue.end_col_offset = 16
+#     new_issue.lineno = 3
+#     new_issue.linerange = [1, 2]
 
-    return new_issue
+#     return new_issue
 
-new_issue = _get_issue_instance()
+# new_issue = _get_issue_instance()
 
-new_issue.get_code()
+# new_issue.get_code()
 
-for branch, hit in branches.items():
-    print(hit)
+# for branch, hit in branches.items():
+#     print(hit)
 
-show_coverage()
+# show_coverage()

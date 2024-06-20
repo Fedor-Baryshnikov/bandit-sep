@@ -29,6 +29,26 @@ NOSEC_COMMENT = re.compile(r"#\s*nosec:?\s*(?P<tests>[^#]+)?#?")
 NOSEC_COMMENT_TESTS = re.compile(r"(?:(B\d+|[a-z\d_]+),?)+", re.IGNORECASE)
 PROGRESS_THRESHOLD = 50
 
+# branches = {
+#     'get_skipped_1': False,
+#     'get_skipped_2': False
+# }
+
+# def show_coverage():
+#     branch_hit = 0
+#     total_branches = 0
+
+#     for branch, hit in branches.items():
+
+#         if hit:
+#             branch_hit += 1
+#             print(f"Branch '{branch}' was hit")
+#         else:
+#             print(f"Branch '{branch}' was not hit")
+
+#         total_branches += 1
+
+#     print(f"Branch coverage is {branch_hit * 100 / total_branches}%\n")
 
 class BanditManager:
     scope = []
@@ -78,8 +98,10 @@ class BanditManager:
         # "skip" is a tuple of name and reason, decode just the name
         for skip in self.skipped:
             if isinstance(skip[0], bytes):
+                # branches["get_skipped_1"] = True
                 ret.append((skip[0].decode("utf-8"), skip[1]))
             else:
+                # branches["get_skipped_2"] = True
                 ret.append(skip)
         return ret
 
@@ -498,3 +520,20 @@ def _parse_nosec_comment(comment):
                 test_ids.add(test_id)
 
     return test_ids
+
+# from bandit.core import config
+
+# manager = BanditManager(config=config.BanditConfig(), agg_type="file", debug=False, verbose=False)
+
+# manager.get_skipped()
+# show_coverage()
+# print("\n")
+
+# manager.skipped.append((bytes(1), "Alex"))
+# manager.get_skipped()
+# show_coverage()
+# print("\n")
+
+# manager.skipped.append(("Alex", "Boring"))
+# manager.get_skipped()
+# show_coverage()
