@@ -293,9 +293,3 @@ new_issue = _get_issue_instance()
 
 new_issue.get_code()
 show_coverage()
-
-
-new_issue = _get_issue_instance()
-
-new_issue.get_code()
-show_coverage()
