@@ -17,10 +17,9 @@ LOG = logging.getLogger(__name__)
 
 """Various helper functions."""
 
-##################################################################
 branch_coverage = {
-    "get_path_for_function_1": False,   # for hasattr(f, "__module__")
-    "get_path_for_function_2": False,   # for hasattr(f, "im_func")
+    "get_path_for_function_1": False,   # for hasattr(f, "__func__")
+    "get_path_for_function_2": False,   # for hasattr(f, "__module__")
     "get_path_for_function_3": False    # for else
 }
 
@@ -30,8 +29,6 @@ class MyClass:
       
 eg_class = MyClass()
 eg_class = eg_class.example_method
-
-print(hasattr(eg_class, '__func__'))
 
 def example_function():
     return 0
@@ -52,8 +49,6 @@ def print_coverage():
         branch_total += 1
 
     print(f"Branch coverage is {branch_hit * 100 / branch_total}%\n")
-
-###################################################################
 
 def _get_attr_qual_name(node, aliases):
     """Get a the full name for the attribute node.
@@ -364,13 +359,15 @@ def get_path_for_function(f):
     :returns: the path, or None if one could not be found or f is not a real
         function
     """
+# We swapped the order of the if-elif statements because the hasattr(f, "__func__") condition will 
+# never be executed if there is if hasattr(f, "__module__") statement before it.
 
-    if hasattr(f, "__module__"):
+    if hasattr(f, "__func__"):
         branch_coverage["get_path_for_function_1"] = True
-        module_name = f.__module__
-    elif hasattr(f, "__func__"):
-        branch_coverage["get_path_for_function_2"] = True
         module_name = f.__func__.__module__
+    elif hasattr(f, "__module__"):
+        branch_coverage["get_path_for_function_2"] = True
+        module_name = f.__module__
     else:
         branch_coverage["get_path_for_function_3"] = True
         LOG.warning("Cannot resolve file where %s is defined", f)
@@ -382,10 +379,6 @@ def get_path_for_function(f):
     else:
         LOG.warning("Cannot resolve file path for module %s", module_name)
         return None
-
-
-##################################################################
-
 
 def parse_ini_file(f_loc):
     config = configparser.ConfigParser()
@@ -421,15 +414,15 @@ def get_nosec(nosec_lines, context):
             return nosec
     return None
 
+#################### Test cases ####################
 
-# Test cases
-print("Running test case 1 (regular function):")
-result_1 = get_path_for_function(example_function)
+print("Running test case 1 (bound method):")
+result_1 = get_path_for_function(eg_class)
 print(f"Result from get_path_for_function: {result_1}")
 print_coverage()
 
-print("Running test case 2 (bound method):")
-result_2 = get_path_for_function(eg_class)
+print("Running test case 2 (regular function):")
+result_2 = get_path_for_function(example_function)
 print(f"Result from get_path_for_function: {result_2}")
 print_coverage()
 
@@ -437,4 +430,3 @@ print("Running test case 3 (non-function object):")
 result_3 = get_path_for_function(0)
 print(f"Result from get_path_for_function: {result_3}")
 print_coverage()
-
