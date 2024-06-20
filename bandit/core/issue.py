@@ -4,13 +4,12 @@
 # SPDX-License-Identifier: Apache-2.0
 import linecache
 import bandit
-import issue
 
 from bandit.core import constants
 
 branches = {
     'self.fname == "<stdin>"': False,
-    'for line_num in range(1, lmin):': False
+    # 'for line_num in range(1, lmin):': False
 }
 
 def show_coverage():
@@ -203,7 +202,7 @@ class Issue:
             branches['self.fname == "<stdin>"'] = True
             self.fdata.seek(0)
             for line_num in range(1, lmin):
-                branches['for line_num in range(1, lmin)'] = True
+                # branches['for line_num in range(1, lmin)'] = True
                 self.fdata.readline()
 
         tmplt = "%i\t%s" if tabbed else "%i %s"
@@ -273,10 +272,10 @@ file = open("example_data.txt", "r")
 
 def _get_issue_instance(
     severity=bandit.MEDIUM,
-    cwe=issue.Cwe.MULTIPLE_BINDS,
+    cwe=Cwe.MULTIPLE_BINDS,
     confidence=bandit.MEDIUM,
 ):
-    new_issue = issue.Issue(severity, cwe, confidence, "Test issue")
+    new_issue = Issue(severity, cwe, confidence, "Test issue")
     new_issue.fname = "<stdin>"
     new_issue.test = "bandit_plugin"
     new_issue.fdata = file
