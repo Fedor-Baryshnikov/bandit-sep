@@ -393,3 +393,11 @@ class ManagerTests(testtools.TestCase):
                 [issue_a, issue_b], [issue_a, issue_b, issue_c]
             ),
         )
+
+    def test_get_skipped_1(self):
+        m = manager.BanditManager(config=config.BanditConfig(), agg_type="file", debug=False, verbose=False)
+
+        m.skipped.append((bytes(1), "Alex"))
+
+        self.assertEqual([('\x00', 'Alex')], m.get_skipped())
+
