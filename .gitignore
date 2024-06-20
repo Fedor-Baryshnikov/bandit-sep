@@ -19,3 +19,4 @@ doc/source/api
 .*.sw?
 AUTHORS
 _temp_output.txt
+.hypothesis/unicode_data/13.0.0/charmap.json.gz
