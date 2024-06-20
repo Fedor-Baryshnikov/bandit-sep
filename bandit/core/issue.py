@@ -275,7 +275,7 @@ def _get_issue_instance(
     confidence=bandit.MEDIUM,
 ):
     new_issue = issue.Issue(severity, cwe, confidence, "Test issue")
-    new_issue.fname = "code.py"
+    new_issue.fname = "<stdin>"
     new_issue.test = "bandit_plugin"
     new_issue.test_id = "B999"
     new_issue.lineno = 1
@@ -283,3 +283,9 @@ def _get_issue_instance(
     new_issue.end_col_offset = 16
 
     return new_issue
+
+
+new_issue = _get_issue_instance()
+
+new_issue.get_code()
+show_coverage()
