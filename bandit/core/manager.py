@@ -30,8 +30,8 @@ NOSEC_COMMENT_TESTS = re.compile(r"(?:(B\d+|[a-z\d_]+),?)+", re.IGNORECASE)
 PROGRESS_THRESHOLD = 50
 
 # branches = {
-#     'get_skipped_1': False,
-#     'get_skipped_2': False
+#     'branch_201': False,
+#     'branch_202': False
 # }
 
 # def show_coverage():
@@ -98,10 +98,10 @@ class BanditManager:
         # "skip" is a tuple of name and reason, decode just the name
         for skip in self.skipped:
             if isinstance(skip[0], bytes):
-                # branches["get_skipped_1"] = True
+                # branches["branch_201"] = True
                 ret.append((skip[0].decode("utf-8"), skip[1]))
             else:
-                # branches["get_skipped_2"] = True
+                # branches["branch_202"] = True
                 ret.append(skip)
         return ret
 

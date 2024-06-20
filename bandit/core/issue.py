@@ -8,8 +8,8 @@ import bandit
 from bandit.core import constants
 
 # branches = {
-#     'self.fname == "<stdin>"': False,
-#     'for line_num in range(1, lmin)': False
+#     'branch_203': False,
+#     'branch_204': False
 # }
 
 # def show_coverage():
@@ -199,10 +199,10 @@ class Issue:
         lmax = lmin + len(self.linerange) + max_lines - 1
 
         if self.fname == "<stdin>":
-            # branches['self.fname == "<stdin>"'] = True
+            # branches['branch_203'] = True
             self.fdata.seek(0)
             for line_num in range(1, lmin):
-                # branches['for line_num in range(1, lmin)'] = True
+                # branches['branch_204'] = True
                 self.fdata.readline()
 
         tmplt = "%i\t%s" if tabbed else "%i %s"
