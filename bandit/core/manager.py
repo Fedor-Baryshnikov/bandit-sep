@@ -94,19 +94,6 @@ class BanditManager:
                 lines, sev_level, conf_level, tmp_file, output_format
             )
     
-    def test_output_results_valid_format(self):
-        # Test that output_results succeeds given a valid format
-        temp_directory = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-        lines = 5
-        sev_level = 1
-        conf_level = 1
-        output_filename = os.path.join(temp_directory, "_temp_output.txt")
-        output_format = "valid"
-        with open(output_filename, "w") as tmp_file:
-            self.output_results(
-                lines, sev_level, conf_level, tmp_file, output_format
-            )
-    
     def test_output_results_custom_format(self):
         # Test that output_results succeeds given a valid format
         temp_directory = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -618,18 +605,29 @@ def _parse_nosec_comment(comment):
     return test_ids
 
 
+#========================#
+# CUSTOM BRANCH COVERAGE #
+#========================#
+
 
 from bandit.core import config
 
-print_coverage()
-
 manager_tests_instance = BanditManager(config=config.BanditConfig(), agg_type="file", debug=False, verbose=False)
-
+print("===============================================")
+print("output_results() coverage:")
+print("-----------------------------------------------")
+print("Pre-tests coverage:")
+print_coverage()
+print("\nRunning tests for output_results...")
 manager_tests_instance.test_output_results_custom_format()
-# manager_tests_instance.test_output_results_valid_format()
 manager_tests_instance.test_output_results_invalid_format()
 manager_tests_instance.test_output_results_exception()
 manager_tests_instance.test_output_results_term_not_dumb()
 manager_tests_instance.test_output_results_term_dumb()
-
+print("\nPost-test coverage:")
 print_coverage()
+print("===============================================")
+
+#========================#
+# CUSTOM BRANCH COVERAGE #
+#========================#
