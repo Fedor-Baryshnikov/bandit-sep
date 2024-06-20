@@ -3,8 +3,31 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 import linecache
+import bandit
+import issue
 
 from bandit.core import constants
+
+branches = {
+    'self.fname == "<stdin>"': False,
+    'for line_num in range(1, lmin):': False
+}
+
+def show_coverage():
+    branch_hit = 0
+    total_branches = 0
+
+    for branch, hit in branches.items():
+
+        if hit:
+            branch_hit += 1
+            print(f"Branch '{branch}' was hit")
+        else:
+            print(f"Branch '{branch}' was not hit")
+
+        total_branches += 1
+
+    print(f"Branch coverage is {branch_hit * 100 / total_branches}%\n")
 
 
 class Cwe:
@@ -177,11 +200,15 @@ class Issue:
         lmax = lmin + len(self.linerange) + max_lines - 1
 
         if self.fname == "<stdin>":
+            branches['self.fname == "<stdin>"'] = True
             self.fdata.seek(0)
             for line_num in range(1, lmin):
+                branches['for line_num in range(1, lmin)'] = True
                 self.fdata.readline()
 
         tmplt = "%i\t%s" if tabbed else "%i %s"
+
+        
         for line in range(lmin, lmax):
             if self.fname == "<stdin>":
                 text = self.fdata.readline()
@@ -241,3 +268,18 @@ def issue_from_dict(data):
     i = Issue(severity=data["issue_severity"])
     i.from_dict(data)
     return i
+
+def _get_issue_instance(
+    severity=bandit.MEDIUM,
+    cwe=issue.Cwe.MULTIPLE_BINDS,
+    confidence=bandit.MEDIUM,
+):
+    new_issue = issue.Issue(severity, cwe, confidence, "Test issue")
+    new_issue.fname = "code.py"
+    new_issue.test = "bandit_plugin"
+    new_issue.test_id = "B999"
+    new_issue.lineno = 1
+    new_issue.col_offset = 8
+    new_issue.end_col_offset = 16
+
+    return new_issue
