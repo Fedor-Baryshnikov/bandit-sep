@@ -29,6 +29,8 @@ from bandit.core import test_set as b_test_set
 # CUSTOM BRANCH COVERAGE #
 #========================#
 branch_coverage = {
+    # bandit/core/manager.py output_results() coverage
+    "branch_100": False, # try branch
     "branch_101": False, # if branch for output_format not in formatters_mgr
     "branch_102": False, # if branch for sys.stdout.isatty()
     "branch_103": False, # else branch for sys.stdout.isatty()
@@ -36,11 +38,65 @@ branch_coverage = {
     "branch_105": False, # if branch for output_format == "custom"
     "branch_106": False, # else branch for output_format != "custom"
     "branch_107": False, # except branch
+    # bandit/core/manager.py run_tests() coverage
+    "branch_108": False, # if branch for len(self.files_list) > PROGRESS_THRESHOLD and LOG.getEffectiveLevel() <= logging.INFO
+    "branch_109": False, # else branch for len(self.files_list) > PROGRESS_THRESHOLD and LOG.getEffectiveLevel() <= logging.INFO
+    "branch_110": False, # for loop
+    "branch_111": False, # try branch
+    "branch_112": False, # if branch for fname == "-"
+    "branch_113": False, # else branch for fname == "-"
+    "branch_114": False, # except branch
+    
 }
 
+def disable_printing():
+    sys.stdout = open(os.devnull, 'w')
+
+def enable_printing():
+    sys.stdout = sys.__stdout__
+
 def print_coverage():
+    hit_branches = 0
+    tot_branches = 0
+    
+    func1_hit_branches = 0
+    func1_tot_branches = 0
+    
+    func2_hit_branches = 0
+    func2_tot_branches = 0
+    
+    print("BRANCH COVERAGE RESULTS")
+    print("===============================================")
     for branch, hit in branch_coverage.items():
-        print(f"{branch} was {'hit' if hit else 'not hit'}")
+        if int(branch.split("_")[1]) in range(100, 108):
+            func1_hit_branches += 1 if hit else 0
+            func1_tot_branches += 1
+        
+        elif int(branch.split("_")[1]) in range(108, 115):
+            func2_hit_branches += 1 if hit else 0
+            func2_tot_branches += 1
+        
+        print(f"[{'✓' if hit else ' '}] {branch}")
+        hit_branches += 1 if hit else 0
+        tot_branches += 1
+        
+    print("-----------------------------------------------")
+    print("output_results() coverage:")
+    print(f"{func1_hit_branches}/{func1_tot_branches} branches hit")
+    print(f"{func1_hit_branches/func1_tot_branches * 100}% branch coverage")
+    print("-----------------------------------------------")
+    
+    print("run_tests() coverage:")
+    print(f"{func2_hit_branches}/{func2_tot_branches} branches hit")
+    print(f"{func2_hit_branches/func2_tot_branches * 100}% branch coverage")
+    
+    print("-----------------------------------------------")
+    print("Total coverage:")
+    print(f"{hit_branches}/{tot_branches} branches hit")
+    print(f"{hit_branches/tot_branches * 100}% branch coverage")
+    print("===============================================")
+        
+        
 #========================#
 # CUSTOM BRANCH COVERAGE #
 #========================#
@@ -52,6 +108,10 @@ PROGRESS_THRESHOLD = 50
 
 
 class BanditManager:
+    
+    #==============================#
+    # CUSTOM BRANCH COVERAGE TESTS #
+    #==============================#
     
     def test_output_results_term_dumb(self):
         # Test that output_results succeeds given a valid format
@@ -120,6 +180,24 @@ class BanditManager:
                 ) 
         except Exception:
             pass
+        
+    def test_run_tests_random_file(self):
+        # Test that bandit manager exits when there is a keyboard interrupt
+        temp_directory = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+        some_file = os.path.join(temp_directory, "some_code_file.py")
+        with open(some_file, "w") as fd:
+            fd.write("some_code = x + 1")
+        self.files_list = [some_file]
+        self.run_tests()
+    
+    def test_run_tests_keyboard_in(self):
+        # Test that bandit manager exits when there is a keyboard interrupt
+        self.files_list = ["-"]
+        self.run_tests()
+        
+    #==============================#
+    # CUSTOM BRANCH COVERAGE TESTS #
+    #==============================#
         
     scope = []
 
@@ -251,6 +329,7 @@ class BanditManager:
         :return: -
         """
         try:
+            branch_coverage["branch_100"] = True                # COVERAGE
             formatters_mgr = extension_loader.MANAGER.formatters_mgr
             if output_format not in formatters_mgr:
                 branch_coverage["branch_101"] = True            # COVERAGE
@@ -376,15 +455,19 @@ class BanditManager:
             len(self.files_list) > PROGRESS_THRESHOLD
             and LOG.getEffectiveLevel() <= logging.INFO
         ):
+            branch_coverage["branch_108"] = True                # COVERAGE
             files = progress.track(self.files_list)
         else:
+            branch_coverage["branch_109"] = True                # COVERAGE
             files = self.files_list
 
         for count, fname in enumerate(files):
             LOG.debug("working on file : %s", fname)
-
+            branch_coverage["branch_110"] = True                # COVERAGE
             try:
+                branch_coverage["branch_111"] = True            # COVERAGE
                 if fname == "-":
+                    branch_coverage["branch_112"] = True        # COVERAGE
                     open_fd = os.fdopen(sys.stdin.fileno(), "rb", 0)
                     fdata = io.BytesIO(open_fd.read())
                     new_files_list = [
@@ -392,9 +475,11 @@ class BanditManager:
                     ]
                     self._parse_file("<stdin>", fdata, new_files_list)
                 else:
+                    branch_coverage["branch_113"] = True        # COVERAGE
                     with open(fname, "rb") as fdata:
                         self._parse_file(fname, fdata, new_files_list)
             except OSError as e:
+                branch_coverage["branch_114"] = True            # COVERAGE
                 self.skipped.append((fname, e.strerror))
                 new_files_list.remove(fname)
 
@@ -613,21 +698,27 @@ def _parse_nosec_comment(comment):
 from bandit.core import config
 
 manager_tests_instance = BanditManager(config=config.BanditConfig(), agg_type="file", debug=False, verbose=False)
-print("===============================================")
-print("output_results() coverage:")
-print("-----------------------------------------------")
-print("Pre-tests coverage:")
+
+print("BEFORE TESTS")
 print_coverage()
-print("\nRunning tests for output_results...")
+
+disable_printing()
 manager_tests_instance.test_output_results_custom_format()
 manager_tests_instance.test_output_results_invalid_format()
 manager_tests_instance.test_output_results_exception()
 manager_tests_instance.test_output_results_term_not_dumb()
 manager_tests_instance.test_output_results_term_dumb()
-print("\nPost-test coverage:")
-print_coverage()
-print("===============================================")
+enable_printing()
 
+print("\nAFTER FUNC 1 TESTS")
+print_coverage()
+
+
+print("\nAFTER FUNC 2 TESTS")
+manager_tests_instance.test_run_tests_random_file()
+# manager_tests_instance.test_run_tests_keyboard_in()
+
+print_coverage()
 #========================#
 # CUSTOM BRANCH COVERAGE #
 #========================#
