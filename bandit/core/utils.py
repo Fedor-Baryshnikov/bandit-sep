@@ -7,6 +7,8 @@ import logging
 import os.path
 import sys
 
+from unittest.mock import MagicMock
+
 try:
     import configparser
 except ImportError:
@@ -21,7 +23,9 @@ LOG = logging.getLogger(__name__)
 branch_coverage = {
     "branch_305": False,   # for hasattr(f, "__func__")
     "branch_306": False,   # for hasattr(f, "__module__")
-    "branch_307": False   # for else
+    "branch_307": False,   # for else
+    "branch_308": False,   # for if hasattr(module, "__file__")
+    "branch_309": False    # for else
 }
 
 # # MyClass is used for testing purporses (test case 1)
@@ -33,8 +37,26 @@ branch_coverage = {
 # eg_class = eg_class.example_method
 
 # # Example function is used for testing purposes (test case 2)
-# def example_function():
+# def test_2_function():
 #     return 0
+
+# # Creating a test function and setting its module to a mock module with __file__ (test case 4)
+# def test_4_function():
+#     pass
+
+# mock_module = MagicMock()
+# mock_module.__file__ = "mock_file.py"
+# sys.modules["mock_module"] = mock_module
+# test_4_function.__module__ = "mock_module"
+
+# # Creating a test function and setting its module to a mock module without __file__ (test case 5)
+# def test_5_function():
+#     pass
+
+# mock_module_no_file = MagicMock()
+# del mock_module_no_file.__file__  # Ensuring there is no __file__ attribute
+# sys.modules["mock_module_no_file"] = mock_module_no_file
+# test_5_function.__module__ = "mock_module_no_file"
 
 # # Function to print the coverage of the branches 
 # def print_coverage():
@@ -377,8 +399,10 @@ def get_path_for_function(f):
 
     module = sys.modules[module_name]
     if hasattr(module, "__file__"):
+        branch_coverage["branch_308"] = True
         return module.__file__
     else:
+        branch_coverage["branch_309"] = True
         LOG.warning("Cannot resolve file path for module %s", module_name)
         return None
 
@@ -421,17 +445,29 @@ def get_nosec(nosec_lines, context):
 # #Runnimg test case 1 (bound method)
 # print("Running test case 1 (bound method):")
 # result_1 = get_path_for_function(eg_class)
-# print(f"Result from get_path_for_function: {result_1}")
+# print(f"Result from get_path_for_function:")
 # print_coverage()
 
 # #Running test case 2 (regular function)
 # print("Running test case 2 (regular function):")
-# result_2 = get_path_for_function(example_function)
-# print(f"Result from get_path_for_function: {result_2}")
+# result_2 = get_path_for_function(test_2_function)
+# print(f"Result from get_path_for_function:")
 # print_coverage()
 
 # # Runnin test case 3 (non-function object)
 # print("Running test case 3 (non-function object):")
 # result_3 = get_path_for_function(0)
-# print(f"Result from get_path_for_function: {result_3}")
+# print(f"Result from get_path_for_function")
+# print_coverage()
+
+# # Running test case 4 (module with __file__)
+# print("Running test case 4 (module with __file__):")
+# result_4 = get_path_for_function(test_4_function)
+# print(f"Result from get_path_for_function")
+# print_coverage()
+
+# # Running test case 5 (module without __file__)
+# print("Running test case 5 (module without __file__):")
+# result_5 = get_path_for_function(test_5_function)
+# print(f"Result from get_path_for_function")
 # print_coverage()
