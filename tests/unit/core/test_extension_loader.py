@@ -14,7 +14,7 @@ class TestGetTestId(unittest.TestCase):
         self.manager.load_plugins("bandit.plugins")
         self.assertIs(self.manager.get_test_id("B001"), None, f'failed, test id is: {self.manager.get_test_id("B001")}')
         
-    
+
     def test_get_test_id2(self):
         self.manager.load_blacklists("bandit.blacklists")
         self.manager.load_formatters("bandit.formatters")
