@@ -285,15 +285,15 @@ class UtilTests(testtools.TestCase):
     def test_path_for_function_no_module(self):
         self.assertIsNone(b_utils.get_path_for_function(1))
     
-    # # Test for testing the first branch of the get_path_for_function function
-    # # Test case 1 running the function with a bound method
-    # def test_path_for_function_bound_method(self):
-    #     function = MagicMock()
-    #     function.__func__ = MagicMock()
-    #     function.__func__.__code__ = "test"
+    # Test for testing the first branch of the get_path_for_function function
+    # Test case 1 running the function with a bound method
+    def test_path_for_function_bound_method(self):
+        function = MagicMock()
+        function.__func__ = MagicMock()
+        function.__func__.__code__ = "test"
 
-    #     path = b_utils.get_path_for_function(function)
-    #     self.assertEqual(path, sys.modules["test"].__file__)
+        path = b_utils.get_path_for_function(function)
+        self.assertEqual(path, sys.modules["test"].__file__)
      
     # # Test case 2 running the function with a regular function
     # def test_path_for_function_regular_function(self):
