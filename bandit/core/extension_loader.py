@@ -6,6 +6,31 @@ from stevedore import extension
 
 from bandit.core import utils
 
+branch_coverage = {
+    # bandit/core/extension_loader.py get_test_id() coverage
+    "branch_108": False, # test_name in self.plugins_by_name
+    "branch_109": False, # test_name not in self.plugins_by_name
+    "branch_110": False, # test_name in self.blacklist_by_name
+    "branch_111": False, # test_name not in self.blacklist_by_name
+}
+
+def print_coverage():
+    hit_branches = 0
+    tot_branches = 0
+    
+    print("BRANCH COVERAGE RESULTS")
+    print("===============================================")
+    for branch, hit in branch_coverage.items():
+        
+        print(f"[{'✓' if hit else ' '}] {branch}")
+        hit_branches += 1 if hit else 0
+        tot_branches += 1
+        
+    print("===============================================")
+    print("Total coverage:")
+
+    print(f"{hit_branches}/{tot_branches} branches hit")
+    print(f"{hit_branches/tot_branches * 100}% branch coverage")
 
 class Manager:
     # These IDs are for bandit built in tests
@@ -55,9 +80,15 @@ class Manager:
 
     def get_test_id(self, test_name):
         if test_name in self.plugins_by_name:
+            branch_coverage["branch_108"] = True
             return self.plugins_by_name[test_name].plugin._test_id
+        else:
+            branch_coverage["branch_109"] = True
         if test_name in self.blacklist_by_name:
+            branch_coverage["branch_110"] = True
             return self.blacklist_by_name[test_name]["id"]
+        else: 
+            branch_coverage["branch_111"] = True
         return None
 
     def load_blacklists(self, blacklist_namespace):
@@ -108,4 +139,18 @@ class Manager:
 # once, store them on the object, and have a module global object for
 # accessing them. After the first time this module is imported, it should save
 # this attribute on the module and not have to reload the entry-points.
+
 MANAGER = Manager()
+
+# -- Tests --
+
+# print_coverage()
+
+# MANAGER.get_test_id("hardcoded_sql_expressions")
+# print_coverage()
+
+# MANAGER.get_test_id("test_blacklisting")
+# print_coverage()
+
+# MANAGER.get_test_id("pickle")
+# print_coverage()

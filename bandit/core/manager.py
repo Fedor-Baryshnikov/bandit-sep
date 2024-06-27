@@ -2,6 +2,8 @@
 # Copyright 2014 Hewlett-Packard Development Company, L.P.
 #
 # SPDX-License-Identifier: Apache-2.0
+
+
 import collections
 import fnmatch
 import io
@@ -23,6 +25,68 @@ from bandit.core import metrics
 from bandit.core import node_visitor as b_node_visitor
 from bandit.core import test_set as b_test_set
 
+#========================#
+# CUSTOM BRANCH COVERAGE #
+#========================#
+branch_coverage = {
+    # bandit/core/manager.py output_results() coverage
+    "branch_100": False, # try branch
+    "branch_101": False, # if branch for output_format not in formatters_mgr
+    "branch_102": False, # if branch for sys.stdout.isatty()
+    "branch_103": False, # else branch for sys.stdout.isatty()
+    "branch_104": False, # else branch for output_format not in formatters_mgr
+    "branch_105": False, # if branch for output_format == "custom"
+    "branch_106": False, # else branch for output_format != "custom"
+    "branch_107": False, # except branch
+    # bandit/core/manager.py get_skipped() coverage
+    "branch_201": False, # if branch for isinstance(skip[0], bytes)
+    "branch_202": False, # else branch for isinstance(skip[0], bytes)   
+}
+
+def print_coverage():
+    hit_branches = 0
+    tot_branches = 0
+    
+    func1_hit_branches = 0
+    func1_tot_branches = 0
+    
+    func2_hit_branches = 0
+    func2_tot_branches = 0
+    
+    print("BRANCH COVERAGE RESULTS")
+    print("===============================================")
+    for branch, hit in branch_coverage.items():
+        if int(branch.split("_")[1]) in range(100, 108):
+            func1_hit_branches += 1 if hit else 0
+            func1_tot_branches += 1
+        
+        elif int(branch.split("_")[1]) in range(201, 203):
+            func2_hit_branches += 1 if hit else 0
+            func2_tot_branches += 1
+        
+        print(f"[{'✓' if hit else ' '}] {branch}")
+        hit_branches += 1 if hit else 0
+        tot_branches += 1
+        
+    print("===============================================")
+    print("output_results() coverage:")
+    print(f"{func1_hit_branches}/{func1_tot_branches} branches hit")
+    print(f"{func1_hit_branches/func1_tot_branches * 100}% branch coverage")
+    print("-----------------------------------------------")
+    print("get_skipped() coverage:")
+    print(f"{func2_hit_branches}/{func2_tot_branches} branches hit")
+    print(f"{func2_hit_branches/func2_tot_branches * 100}% branch coverage")
+    print("-----------------------------------------------")
+    print("Total coverage:")
+
+    print(f"{hit_branches}/{tot_branches} branches hit")
+    print(f"{hit_branches/tot_branches * 100}% branch coverage")
+        
+        
+#========================#
+# CUSTOM BRANCH COVERAGE #
+#========================#
+
 LOG = logging.getLogger(__name__)
 NOSEC_COMMENT = re.compile(r"#\s*nosec:?\s*(?P<tests>[^#]+)?#?")
 NOSEC_COMMENT_TESTS = re.compile(r"(?:(B\d+|[a-z\d_]+),?)+", re.IGNORECASE)
@@ -30,6 +94,83 @@ PROGRESS_THRESHOLD = 50
 
 
 class BanditManager:
+    
+    #==============================#
+    # CUSTOM BRANCH COVERAGE TESTS #
+    #==============================#
+    
+    # def test_output_results_term_dumb(self):
+    #     # Test that output_results succeeds given a valid format
+    #     temp_directory = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+    #     lines = 5
+    #     sev_level = 1
+    #     conf_level = 1
+    #     output_filename = os.path.join(temp_directory, "_temp_output.txt")
+    #     output_format = "invalid"
+    #     os.environ["TERM"] = "dumb"
+    #     with open(output_filename, "w") as tmp_file:
+    #         self.output_results(
+    #             lines, sev_level, conf_level, tmp_file, output_format
+    #         )
+    
+    # def test_output_results_term_not_dumb(self):
+    #     # Test that output_results succeeds given a valid format
+    #     temp_directory = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+    #     lines = 5
+    #     sev_level = 1
+    #     conf_level = 1
+    #     output_filename = os.path.join(temp_directory, "_temp_output.txt")
+    #     output_format = "invalid"
+    #     os.environ["TERM"] = "test"
+    #     with open(output_filename, "w") as tmp_file:
+    #         self.output_results(
+    #             lines, sev_level, conf_level, tmp_file, output_format
+    #         )
+    
+    # def test_output_results_invalid_format(self):
+    #     # Test that output_results succeeds given a valid format
+    #     temp_directory = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+    #     lines = 5
+    #     sev_level = 1
+    #     conf_level = 1
+    #     output_filename = os.path.join(temp_directory, "_temp_output.txt")
+    #     output_format = "invalid"
+    #     with open(output_filename, "w") as tmp_file:
+    #         self.output_results(
+    #             lines, sev_level, conf_level, tmp_file, output_format
+    #         )
+    
+    # def test_output_results_custom_format(self):
+    #     # Test that output_results succeeds given a valid format
+    #     temp_directory = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+    #     lines = 5
+    #     sev_level = 1
+    #     conf_level = 1
+    #     output_filename = os.path.join(temp_directory, "_temp_output.txt")
+    #     output_format = "custom"
+    #     with open(output_filename, "w") as tmp_file:
+    #         self.output_results(
+    #             lines, sev_level, conf_level, tmp_file, output_format
+    #         )
+            
+    # def test_output_results_exception(self):
+    #     # Test that output_results succeeds given a valid format
+    #     lines = 5
+    #     sev_level = 1
+    #     conf_level = 1
+    #     output_format = "valid"
+        
+    #     try:
+    #         self.output_results(
+    #                 lines, sev_level, conf_level, 'test', output_format
+    #             ) 
+    #     except Exception:
+    #         pass    
+        
+    #==============================#
+    # CUSTOM BRANCH COVERAGE TESTS #
+    #==============================#
+        
     scope = []
 
     def __init__(
@@ -77,8 +218,10 @@ class BanditManager:
         # "skip" is a tuple of name and reason, decode just the name
         for skip in self.skipped:
             if isinstance(skip[0], bytes):
+                branch_coverage["branch_201"] = True
                 ret.append((skip[0].decode("utf-8"), skip[1]))
             else:
+                branch_coverage["branch_202"] = True
                 ret.append(skip)
         return ret
 
@@ -160,8 +303,10 @@ class BanditManager:
         :return: -
         """
         try:
+            branch_coverage["branch_100"] = True                # COVERAGE
             formatters_mgr = extension_loader.MANAGER.formatters_mgr
             if output_format not in formatters_mgr:
+                branch_coverage["branch_101"] = True            # COVERAGE
                 output_format = (
                     "screen"
                     if (
@@ -171,10 +316,22 @@ class BanditManager:
                     )
                     else "txt"
                 )
+                
+
+                if (sys.stdout.isatty()                         # COVERAGE
+                    and os.getenv("NO_COLOR") is None           # COVERAGE
+                    and os.getenv("TERM") != "dumb"             # COVERAGE
+                    ):                                          # COVERAGE
+                    branch_coverage["branch_102"] = True        # COVERAGE
+                else:                                           # COVERAGE
+                    branch_coverage["branch_103"] = True        # COVERAGE
+            else:                                               # COVERAGE
+                branch_coverage["branch_104"] = True            # COVERAGE
 
             formatter = formatters_mgr[output_format]
             report_func = formatter.plugin
             if output_format == "custom":
+                branch_coverage["branch_105"] = True            # COVERAGE
                 report_func(
                     self,
                     fileobj=output_file,
@@ -183,6 +340,7 @@ class BanditManager:
                     template=template,
                 )
             else:
+                branch_coverage["branch_106"] = True            # COVERAGE
                 report_func(
                     self,
                     fileobj=output_file,
@@ -192,6 +350,7 @@ class BanditManager:
                 )
 
         except Exception as e:
+            branch_coverage["branch_107"] = True                # COVERAGE
             raise RuntimeError(
                 f"Unable to output report using "
                 f"'{output_format}' formatter: {str(e)}"
@@ -270,25 +429,38 @@ class BanditManager:
             len(self.files_list) > PROGRESS_THRESHOLD
             and LOG.getEffectiveLevel() <= logging.INFO
         ):
+            branch_coverage["branch_108"] = True                # COVERAGE
             files = progress.track(self.files_list)
         else:
+            branch_coverage["branch_109"] = True                # COVERAGE
             files = self.files_list
 
         for count, fname in enumerate(files):
             LOG.debug("working on file : %s", fname)
-
+            branch_coverage["branch_110"] = True                # COVERAGE
             try:
+                branch_coverage["branch_111"] = True            # COVERAGE
                 if fname == "-":
+                    branch_coverage["branch_112"] = True        # COVERAGE
                     open_fd = os.fdopen(sys.stdin.fileno(), "rb", 0)
                     fdata = io.BytesIO(open_fd.read())
+                    for x in new_files_list:                                        # COVERAGE
+                        if x == "-":                                                # COVERAGE
+                            branch_coverage["branch_113"] = True                    # COVERAGE
+                        else:                                                       # COVERAGE
+                            branch_coverage["branch_114"] = True                    # COVERAGE
                     new_files_list = [
                         "<stdin>" if x == "-" else x for x in new_files_list
                     ]
                     self._parse_file("<stdin>", fdata, new_files_list)
+                    
+    
                 else:
+                    branch_coverage["branch_115"] = True        # COVERAGE
                     with open(fname, "rb") as fdata:
                         self._parse_file(fname, fdata, new_files_list)
             except OSError as e:
+                branch_coverage["branch_116"] = True            # COVERAGE
                 self.skipped.append((fname, e.strerror))
                 new_files_list.remove(fname)
 
@@ -497,3 +669,53 @@ def _parse_nosec_comment(comment):
                 test_ids.add(test_id)
 
     return test_ids
+
+
+#========================#
+# CUSTOM BRANCH COVERAGE #
+#========================#
+
+
+from bandit.core import config
+
+manager = BanditManager(config=config.BanditConfig(), agg_type="file", debug=False, verbose=False)
+
+print("BEFORE TESTS")
+print_coverage()
+
+# manager.test_output_results_custom_format()
+# print_coverage()
+# manager.test_output_results_invalid_format()
+# print_coverage()
+# manager.test_output_results_exception()
+# print_coverage()
+# manager.test_output_results_term_not_dumb()
+# print_coverage()
+# manager.test_output_results_term_dumb()
+# print_coverage()
+
+
+# print("\nAFTER output_results() TESTS")
+# print_coverage()
+
+
+# manager.get_skipped()
+# print_coverage()
+
+# manager.skipped.append((bytes(1), "Alex"))
+# manager.get_skipped()
+# print_coverage()
+
+# manager.skipped.append(("Alex", "Boring"))
+# manager.get_skipped()
+# print("\nAFTER get_skipped() TESTS")
+# print_coverage()
+
+#========================#
+# CUSTOM BRANCH COVERAGE #
+#========================#
+
+
+
+
+

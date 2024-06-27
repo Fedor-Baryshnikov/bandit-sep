@@ -6,35 +6,6 @@ import linecache
 
 import bandit
 from bandit.core import constants
-
-# branches_from_dict = {
-#     'branch-10': False,
-#     'branch-11': False
-# }
-
-# branches_get_code = {
-#     'branch_203': False,
-#     'branch_204': False
-# }
-
-# def show_coverage(input_branches):
-#     branches = input_branches
-#     branch_hit = 0
-#     total_branches = 0
-
-#     for branch, hit in branches.items():
-
-#         if hit:
-#             branch_hit += 1
-#             print(f"Branch '{branch}' was hit")
-#         else:
-#             print(f"Branch '{branch}' was not hit")
-
-#         total_branches += 1
-
-#     print(f"Branch coverage is {branch_hit * 100 / total_branches}%\n")
-
-
 class Cwe:
     NOTSET = 0
     IMPROPER_INPUT_VALIDATION = 20
@@ -155,7 +126,7 @@ class Issue:
 
     def __eq__(self, other):
         # if the issue text, severity, confidence, and filename match, it's
-        # the same issue from our perspective
+        # the same issue from our perspectivebra
         match_types = [
             "text",
             "severity",

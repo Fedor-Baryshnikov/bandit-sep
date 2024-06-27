@@ -40,6 +40,13 @@ class ManagerTests(testtools.TestCase):
             config=self.config, agg_type="file", debug=False, verbose=False
         )
 
+    def test_get_skipped_1(self):
+        m = manager.BanditManager(config=config.BanditConfig(), agg_type="file", debug=False, verbose=False)
+
+        m.skipped.append((bytes(1), "Alex"))
+
+        self.assertEqual([('\x00', 'Alex')], m.get_skipped())
+
     def test_create_manager(self):
         # make sure we can create a manager
         self.assertEqual(False, self.manager.debug)
@@ -219,7 +226,44 @@ class ManagerTests(testtools.TestCase):
                 lines, sev_level, conf_level, tmp_file, output_format
             )
         self.assertTrue(os.path.isfile(output_filename))
+    
+    def test_output_results_custom_format(self):                                                                            # CUSTOM CODE
+        # Test that output_results succeeds given a valid format                                                            # CUSTOM CODE
+        temp_directory = self.useFixture(fixtures.TempDir()).path                                                           # CUSTOM CODE
+        lines = 5                                                                                                           # CUSTOM CODE
+        sev_level = constants.LOW                                                                                           # CUSTOM CODE
+        conf_level = constants.LOW                                                                                          # CUSTOM CODE
+        output_filename = os.path.join(temp_directory, "_temp_output.txt")                                                  # CUSTOM CODE
+        output_format = "custom"                                                                                            # CUSTOM CODE
+        with open(output_filename, "w") as tmp_file:                                                                        # CUSTOM CODE
+            self.manager.output_results(                                                                                    # CUSTOM CODE
+                lines, sev_level, conf_level, tmp_file, output_format                                                       # CUSTOM CODE
+            )                                                                                                               # CUSTOM CODE
+        self.assertTrue(os.path.isfile(output_filename))                                                                    # CUSTOM CODE
 
+    @mock.patch('sys.stdout.isatty')                                                                                        # DEFUNCT CUSTOM CODE 
+    @mock.patch.dict('os.environ', {'TERM': 'dumb', 'NO_COLOR': 'None'})                                                    # DEFUNCT CUSTOM CODE 
+    def test_output_results_stdout_and_env_var(self, isatty):                                                               # DEFUNCT CUSTOM CODE 
+        isatty.return_value = True                                                                                          # DEFUNCT CUSTOM CODE 
+        temp_directory = self.useFixture(fixtures.TempDir()).path                                                           # DEFUNCT CUSTOM CODE 
+        lines = 5                                                                                                           # DEFUNCT CUSTOM CODE 
+        sev_level = constants.LOW                                                                                           # DEFUNCT CUSTOM CODE 
+        conf_level = constants.LOW                                                                                          # DEFUNCT CUSTOM CODE 
+        output_filename = os.path.join(temp_directory, "_temp_output.txt")                                                  # DEFUNCT CUSTOM CODE 
+        output_format = "txt"                                                                                               # DEFUNCT CUSTOM CODE 
+        with open(output_filename, "w") as tmp_file:                                                                        # DEFUNCT CUSTOM CODE 
+            self.manager.output_results(                                                                                    # DEFUNCT CUSTOM CODE 
+                lines, sev_level, conf_level, tmp_file, output_format                                                       # DEFUNCT CUSTOM CODE 
+            )                                                                                                               # DEFUNCT CUSTOM CODE 
+        self.assertTrue(os.path.isfile(output_filename))                                                                    # DEFUNCT CUSTOM CODE 
+
+    def test_output_results_exception(self):                                                                                # CUSTOM CODE
+        lines = 5                                                                                                           # CUSTOM CODE
+        sev_level = constants.LOW                                                                                           # CUSTOM CODE
+        conf_level = constants.LOW                                                                                          # CUSTOM CODE
+        output_format = "custom"                                                                                            # CUSTOM CODE
+        self.assertRaises(RuntimeError, self.manager.output_results, lines, sev_level, conf_level, "empty", output_format)  # CUSTOM CODE
+        
     @mock.patch("os.path.isdir")
     def test_discover_files_recurse_skip(self, isdir):
         isdir.return_value = True
@@ -300,6 +344,19 @@ class ManagerTests(testtools.TestCase):
             self.manager.discover_files(["thing"], True)
             self.assertEqual(["./thing"], self.manager.files_list)
             self.assertEqual([], self.manager.excluded_files)
+
+    def test_run_tests_threshold_and_logging_lvl(self):                                 # DEFUNCT CUSTOM CODE
+        import logging                                                                  # DEFUNCT CUSTOM CODE
+    # Test that bandit manager exits when there is a keyboard interrupt                 # DEFUNCT CUSTOM CODE
+        temp_directory = self.useFixture(fixtures.TempDir()).path                       # DEFUNCT CUSTOM CODE
+        some_file = os.path.join(temp_directory, "some_code_file.py")                   # DEFUNCT CUSTOM CODE
+        log_level = logging.getLogger().getEffectiveLevel()                             # DEFUNCT CUSTOM CODE
+        logging.getLogger().setLevel(1)                                                 # DEFUNCT CUSTOM CODE
+        with open(some_file, "w") as fd:                                                # DEFUNCT CUSTOM CODE
+            fd.write("some_code = x + 1")                                               # DEFUNCT CUSTOM CODE
+        self.files_list = [some_file] * (manager.PROGRESS_THRESHOLD + 1)                # DEFUNCT CUSTOM CODE
+        self.manager.run_tests()                                                        # DEFUNCT CUSTOM CODE
+        logging.getLogger().setLevel(log_level)                                         # DEFUNCT CUSTOM CODE
 
     def test_run_tests_keyboardinterrupt(self):
         # Test that bandit manager exits when there is a keyboard interrupt
@@ -393,3 +450,4 @@ class ManagerTests(testtools.TestCase):
                 [issue_a, issue_b], [issue_a, issue_b, issue_c]
             ),
         )
+
