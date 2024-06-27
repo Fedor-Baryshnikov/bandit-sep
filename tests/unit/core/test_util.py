@@ -285,8 +285,7 @@ class UtilTests(testtools.TestCase):
     def test_path_for_function_no_module(self):
         self.assertIsNone(b_utils.get_path_for_function(1))
     
-    # Test for testing the first branch of the get_path_for_function function
-    # Test case 1 running the function with a bound method
+    # Test for testing the get_path_for_function function
     def test_path_for_function_bound_method(self):
         function = MagicMock()
         function.__func__ = MagicMock()
