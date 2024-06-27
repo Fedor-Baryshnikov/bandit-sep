@@ -140,9 +140,9 @@ class Manager:
 # accessing them. After the first time this module is imported, it should save
 # this attribute on the module and not have to reload the entry-points.
 
-# -- Tests --
+MANAGER = Manager()
 
-# MANAGER = Manager()
+# -- Tests --
 
 # print_coverage()
 
