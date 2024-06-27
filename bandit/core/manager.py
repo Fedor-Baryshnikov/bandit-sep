@@ -482,10 +482,6 @@ class BanditManager:
         # if we have problems with a file, we'll remove it from the files_list
         # and add it to the skipped list instead
         new_files_list = list(self.files_list)
-        print(len(self.files_list) > PROGRESS_THRESHOLD)
-        print(LOG.getEffectiveLevel())
-        print(logging.INFO)
-        print(LOG.getEffectiveLevel() <= logging.INFO)
         if (
             len(self.files_list) > PROGRESS_THRESHOLD
             and LOG.getEffectiveLevel() <= logging.INFO
