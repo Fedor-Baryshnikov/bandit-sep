@@ -44,8 +44,10 @@ branch_coverage = {
     "branch_110": False, # for loop
     "branch_111": False, # try branch
     "branch_112": False, # if branch for fname == "-"
-    "branch_113": False, # else branch for fname == "-"
-    "branch_114": False, # except branch
+    "branch_113": False, # if branch for x == "-"
+    "branch_114": False, # else branch for x == "-"
+    "branch_115": False, # else branch for fname == "-"
+    "branch_116": False, # except branch
     
 }
 
@@ -205,7 +207,7 @@ class BanditManager:
     
     def test_run_tests_keyboard_in(self):
         # Test that bandit manager exits when there is a keyboard interrupt
-        self.files_list = ["-"]
+        self.files_list = ["-", "thing.py", "dumb.py"]
         try:
             self.run_tests()
         except KeyboardInterrupt:
@@ -487,17 +489,23 @@ class BanditManager:
                     branch_coverage["branch_112"] = True        # COVERAGE
                     open_fd = os.fdopen(sys.stdin.fileno(), "rb", 0)
                     fdata = io.BytesIO(open_fd.read())
+                    for x in new_files_list:
+                        if x == "-":
+                            branch_coverage["branch_113"] = True        # COVERAGE
+                        else:
+                            branch_coverage["branch_114"] = True        # COVERAGE
                     new_files_list = [
                         "<stdin>" if x == "-" else x for x in new_files_list
                     ]
                     self._parse_file("<stdin>", fdata, new_files_list)
+                    
     
                 else:
-                    branch_coverage["branch_113"] = True        # COVERAGE
+                    branch_coverage["branch_115"] = True        # COVERAGE
                     with open(fname, "rb") as fdata:
                         self._parse_file(fname, fdata, new_files_list)
             except OSError as e:
-                branch_coverage["branch_114"] = True            # COVERAGE
+                branch_coverage["branch_116"] = True            # COVERAGE
                 self.skipped.append((fname, e.strerror))
                 new_files_list.remove(fname)
 
