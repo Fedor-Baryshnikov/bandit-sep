@@ -6,11 +6,6 @@ import linecache
 
 from bandit.core import constants
 
-# branch_get_skipped = {
-#     'branch_201': False,
-#     'branch_202': False
-# }
-
 class Cwe:
     NOTSET = 0
     IMPROPER_INPUT_VALIDATION = 20
