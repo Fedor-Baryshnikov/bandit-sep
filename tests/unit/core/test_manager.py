@@ -338,6 +338,19 @@ class ManagerTests(testtools.TestCase):
             self.assertEqual(["./thing"], self.manager.files_list)
             self.assertEqual([], self.manager.excluded_files)
 
+    def test_run_tests_threshold_and_logging_lvl(self):                                 # DEFUNCT CUSTOM CODE
+        import logging                                                                  # DEFUNCT CUSTOM CODE
+    # Test that bandit manager exits when there is a keyboard interrupt                 # DEFUNCT CUSTOM CODE
+        temp_directory = self.useFixture(fixtures.TempDir()).path                       # DEFUNCT CUSTOM CODE
+        some_file = os.path.join(temp_directory, "some_code_file.py")                   # DEFUNCT CUSTOM CODE
+        log_level = logging.getLogger().getEffectiveLevel()                             # DEFUNCT CUSTOM CODE
+        logging.getLogger().setLevel(1)                                                 # DEFUNCT CUSTOM CODE
+        with open(some_file, "w") as fd:                                                # DEFUNCT CUSTOM CODE
+            fd.write("some_code = x + 1")                                               # DEFUNCT CUSTOM CODE
+        self.files_list = [some_file] * (manager.PROGRESS_THRESHOLD + 1)                # DEFUNCT CUSTOM CODE
+        self.manager.run_tests()                                                        # DEFUNCT CUSTOM CODE
+        logging.getLogger().setLevel(log_level)                                         # DEFUNCT CUSTOM CODE
+
     def test_run_tests_keyboardinterrupt(self):
         # Test that bandit manager exits when there is a keyboard interrupt
         temp_directory = self.useFixture(fixtures.TempDir()).path
