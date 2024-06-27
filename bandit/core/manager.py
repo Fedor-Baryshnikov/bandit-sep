@@ -38,7 +38,7 @@ branch_coverage = {
     "branch_105": False, # if branch for output_format == "custom"
     "branch_106": False, # else branch for output_format != "custom"
     "branch_107": False, # except branch
-    # bandit/core/manager.py run_tests() coverage
+    # bandit/core/manager.py get_skipped() coverage
     "branch_201": False, # if branch for len(self.files_list) > PROGRESS_THRESHOLD and LOG.getEffectiveLevel() <= logging.INFO
     "branch_202": False, # else branch for len(self.files_list) > PROGRESS_THRESHOLD and LOG.getEffectiveLevel() <= logging.INFO
     
