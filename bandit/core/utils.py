@@ -7,6 +7,8 @@ import logging
 import os.path
 import sys
 
+from unittest.mock import MagicMock
+
 try:
     import configparser
 except ImportError:
@@ -17,6 +19,62 @@ LOG = logging.getLogger(__name__)
 
 """Various helper functions."""
 
+# Branch coverage for get_path_for_function(f)
+branch_coverage = {
+    "branch_305": False,   # for hasattr(f, "__func__")
+    "branch_306": False,   # for hasattr(f, "__module__")
+    "branch_307": False,   # for else
+    "branch_308": False,   # for if hasattr(module, "__file__")
+    "branch_309": False    # for else
+}
+
+# # MyClass is used for testing purporses (test case 1)
+# class MyClass:
+#     def example_method(self):
+#         return 1
+      
+# eg_class = MyClass()
+# eg_class = eg_class.example_method
+
+# # Example function is used for testing purposes (test case 2)
+# def test_2_function():
+#     return 0
+
+# # Creating a test function and setting its module to a mock module with __file__ (test case 4)
+# def test_4_function():
+#     pass
+
+# mock_module = MagicMock()
+# mock_module.__file__ = "mock_file.py"
+# sys.modules["mock_module"] = mock_module
+# test_4_function.__module__ = "mock_module"
+
+# # Creating a test function and setting its module to a mock module without __file__ (test case 5)
+# def test_5_function():
+#     pass
+
+# mock_module_no_file = MagicMock()
+# del mock_module_no_file.__file__  # Ensuring there is no __file__ attribute
+# sys.modules["mock_module_no_file"] = mock_module_no_file
+# test_5_function.__module__ = "mock_module_no_file"
+
+# # Function to print the coverage of the branches 
+# def print_coverage():
+#     branch_hit = 0
+#     branch_total = 0
+
+#     for branch, hit in branch_coverage.items():
+
+#         if hit:
+#             branch_hit += 1
+#             print (f"Branch {branch} hit")
+
+#         else:
+#             print (f"Branch {branch} not hit")
+
+#         branch_total += 1
+
+#     print(f"Branch coverage is {branch_hit * 100 / branch_total}%\n")
 
 def _get_attr_qual_name(node, aliases):
     """Get a the full name for the attribute node.
@@ -318,30 +376,35 @@ def get_called_name(node):
         return func.attr if isinstance(func, ast.Attribute) else func.id
     except AttributeError:
         return ""
-
-
+    
 def get_path_for_function(f):
     """Get the path of the file where the function is defined.
 
     :returns: the path, or None if one could not be found or f is not a real
         function
     """
+# We swapped the order of the if-elif statements because the hasattr(f, "__func__") condition will 
+# never be executed if there is if hasattr(f, "__module__") statement before it.
 
-    if hasattr(f, "__module__"):
+    if hasattr(f, "__func__"):
+        branch_coverage["branch_305"] = True
+        module_name = f.__func__.__module__
+    elif hasattr(f, "__module__"):
+        branch_coverage["branch_306"] = True
         module_name = f.__module__
-    elif hasattr(f, "im_func"):
-        module_name = f.im_func.__module__
     else:
+        branch_coverage["branch_307"] = True
         LOG.warning("Cannot resolve file where %s is defined", f)
         return None
 
     module = sys.modules[module_name]
     if hasattr(module, "__file__"):
+        branch_coverage["branch_308"] = True
         return module.__file__
     else:
+        branch_coverage["branch_309"] = True
         LOG.warning("Cannot resolve file path for module %s", module_name)
         return None
-
 
 def parse_ini_file(f_loc):
     config = configparser.ConfigParser()
@@ -376,3 +439,35 @@ def get_nosec(nosec_lines, context):
         if nosec is not None:
             return nosec
     return None
+
+#################### Test cases ####################
+
+# #Runnimg test case 1 (bound method)
+# print("Running test case 1 (bound method):")
+# result_1 = get_path_for_function(eg_class)
+# print(f"Result from get_path_for_function:")
+# print_coverage()
+
+# #Running test case 2 (regular function)
+# print("Running test case 2 (regular function):")
+# result_2 = get_path_for_function(test_2_function)
+# print(f"Result from get_path_for_function:")
+# print_coverage()
+
+# # Runnin test case 3 (non-function object)
+# print("Running test case 3 (non-function object):")
+# result_3 = get_path_for_function(0)
+# print(f"Result from get_path_for_function")
+# print_coverage()
+
+# # Running test case 4 (module with __file__)
+# print("Running test case 4 (module with __file__):")
+# result_4 = get_path_for_function(test_4_function)
+# print(f"Result from get_path_for_function")
+# print_coverage()
+
+# # Running test case 5 (module without __file__)
+# print("Running test case 5 (module without __file__):")
+# result_5 = get_path_for_function(test_5_function)
+# print(f"Result from get_path_for_function")
+# print_coverage()
