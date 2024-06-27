@@ -19,22 +19,22 @@ branch_coverage = {
 }   
 
 # Function to print the coverage of branches
-# def print_coverage():
-#     branch_hit = 0
-#     branch_total = 0
+def print_coverage():
+    branch_hit = 0
+    branch_total = 0
 
-#     for branch, hit in branch_coverage.items():
+    for branch, hit in branch_coverage.items():
 
-#         if hit:
-#             branch_hit += 1
-#             print (f"Branch {branch} hit")
+        if hit:
+            branch_hit += 1
+            print (f"Branch {branch} hit")
 
-#         else:
-#             print (f"Branch {branch} not hit")
+        else:
+            print (f"Branch {branch} not hit")
 
-#         branch_total += 1
+        branch_total += 1
 
-#     print(f"Branch coverage is {branch_hit * 100 / branch_total}%\n")
+    print(f"Branch coverage is {branch_hit * 100 / branch_total}%\n")
 
 class BanditNodeVisitor:
     def __init__(
@@ -316,45 +316,45 @@ class BanditNodeVisitor:
 
 #################### Test cases ####################
 
-# class TestMetaAst:
-#     def add_node(self, node, name, depth):
-#         pass
+class TestMetaAst:
+    def add_node(self, node, name, depth):
+        pass
 
-# class TestSet:
-#     def get_tests(self, checktype):
-#         return []
+class TestSet:
+    def get_tests(self, checktype):
+        return []
 
-# # Instantiate BanditNodeVisitor
-# visitor = BanditNodeVisitor(
-#     fname='test.py',
-#     fdata='planes do not fly randomly',
-#     metaast=TestMetaAst(),
-#     testset=TestSet(),
-#     debug=False,
-#     nosec_lines=None,
-#     metrics=None
-# )
+# Instantiate BanditNodeVisitor
+visitor = BanditNodeVisitor(
+    fname='test.py',
+    fdata='planes do not fly randomly',
+    metaast=TestMetaAst(),
+    testset=TestSet(),
+    debug=False,
+    nosec_lines=None,
+    metrics=None
+)
 
-# # Set context for the visitor
-# visitor.context = {}
+# Set context for the visitor
+visitor.context = {}
 
-# # Create a supported AST node (in this case: FunctionDef)
-# supported_node = ast.FunctionDef(
-#     name='example_function'
-# )
+# Create a supported AST node (in this case: FunctionDef)
+supported_node = ast.FunctionDef(
+    name='example_function'
+)
 
-# # Running test case 1 (visitor is not None)
-# print("Running test case 1 (visitor is not None)")
-# visitor.visit(supported_node)
-# print_coverage()
+# Running test case 1 (visitor is not None)
+print("Running test case 1 (visitor is not None)")
+visitor.visit(supported_node)
+print_coverage()
 
-# # Running test case 2 (visitor is None)
-# print("Running test case 2 (visitor is None)")
-# visitor.visit(None)
-# print_coverage()
+# Running test case 2 (visitor is None)
+print("Running test case 2 (visitor is None)")
+visitor.visit(None)
+print_coverage()
 
-# # Running test case 3 (if self.debug)
-# print("Running test case 3 (if self.debug)")
-# visitor.debug = True  # Enable debug mode
-# visitor.visit(supported_node)
-# print_coverage()
+# Running test case 3 (if self.debug)
+print("Running test case 3 (if self.debug)")
+visitor.debug = True  # Enable debug mode
+visitor.visit(supported_node)
+print_coverage()
