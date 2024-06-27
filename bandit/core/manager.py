@@ -80,21 +80,19 @@ def print_coverage():
         hit_branches += 1 if hit else 0
         tot_branches += 1
         
-    print("-----------------------------------------------")
+    print("===============================================")
     print("output_results() coverage:")
     print(f"{func1_hit_branches}/{func1_tot_branches} branches hit")
     print(f"{func1_hit_branches/func1_tot_branches * 100}% branch coverage")
     print("-----------------------------------------------")
-    
     print("run_tests() coverage:")
     print(f"{func2_hit_branches}/{func2_tot_branches} branches hit")
     print(f"{func2_hit_branches/func2_tot_branches * 100}% branch coverage")
-    
     print("-----------------------------------------------")
     print("Total coverage:")
+
     print(f"{hit_branches}/{tot_branches} branches hit")
     print(f"{hit_branches/tot_branches * 100}% branch coverage")
-    print("===============================================")
         
         
 #========================#
@@ -194,6 +192,7 @@ class BanditManager:
         # Test that bandit manager exits when there is a keyboard interrupt
         self.files_list = ["-"]
         self.run_tests()
+        
         
     #==============================#
     # CUSTOM BRANCH COVERAGE TESTS #
@@ -702,13 +701,13 @@ manager_tests_instance = BanditManager(config=config.BanditConfig(), agg_type="f
 print("BEFORE TESTS")
 print_coverage()
 
-disable_printing()
+# disable_printing()
 manager_tests_instance.test_output_results_custom_format()
 manager_tests_instance.test_output_results_invalid_format()
 manager_tests_instance.test_output_results_exception()
 manager_tests_instance.test_output_results_term_not_dumb()
 manager_tests_instance.test_output_results_term_dumb()
-enable_printing()
+# enable_printing()
 
 print("\nAFTER FUNC 1 TESTS")
 print_coverage()
