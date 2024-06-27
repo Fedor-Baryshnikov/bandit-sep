@@ -39,17 +39,9 @@ branch_coverage = {
     "branch_106": False, # else branch for output_format != "custom"
     "branch_107": False, # except branch
     # bandit/core/manager.py get_skipped() coverage
-    "branch_201": False, # if branch for len(self.files_list) > PROGRESS_THRESHOLD and LOG.getEffectiveLevel() <= logging.INFO
-    "branch_202": False, # else branch for len(self.files_list) > PROGRESS_THRESHOLD and LOG.getEffectiveLevel() <= logging.INFO
-    
-    
+    "branch_201": False, # if branch for isinstance(skip[0], bytes)
+    "branch_202": False, # else branch for isinstance(skip[0], bytes)   
 }
-
-# def disable_printing():
-#     sys.stdout = open(os.devnull, 'w')
-
-# def enable_printing():
-#     sys.stdout = sys.__stdout__
 
 def print_coverage():
     hit_branches = 0
@@ -691,35 +683,33 @@ manager = BanditManager(config=config.BanditConfig(), agg_type="file", debug=Fal
 print("BEFORE TESTS")
 print_coverage()
 
-# disable_printing()
-manager.test_output_results_custom_format()
-print_coverage()
-manager.test_output_results_invalid_format()
-print_coverage()
-manager.test_output_results_exception()
-print_coverage()
-manager.test_output_results_term_not_dumb()
-print_coverage()
-manager.test_output_results_term_dumb()
-print_coverage()
-# enable_printing()
+# manager.test_output_results_custom_format()
+# print_coverage()
+# manager.test_output_results_invalid_format()
+# print_coverage()
+# manager.test_output_results_exception()
+# print_coverage()
+# manager.test_output_results_term_not_dumb()
+# print_coverage()
+# manager.test_output_results_term_dumb()
+# print_coverage()
 
 
-print("\nAFTER output_results() TESTS")
-print_coverage()
+# print("\nAFTER output_results() TESTS")
+# print_coverage()
 
 
-manager.get_skipped()
-print_coverage()
+# manager.get_skipped()
+# print_coverage()
 
-manager.skipped.append((bytes(1), "Alex"))
-manager.get_skipped()
-print_coverage()
+# manager.skipped.append((bytes(1), "Alex"))
+# manager.get_skipped()
+# print_coverage()
 
-manager.skipped.append(("Alex", "Boring"))
-manager.get_skipped()
-print("\nAFTER get_skipped() TESTS")
-print_coverage()
+# manager.skipped.append(("Alex", "Boring"))
+# manager.get_skipped()
+# print("\nAFTER get_skipped() TESTS")
+# print_coverage()
 
 #========================#
 # CUSTOM BRANCH COVERAGE #
