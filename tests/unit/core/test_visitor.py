@@ -26,7 +26,7 @@ class TestBanditNodeVisitor(unittest.TestCase):
         self.visitor.context = {}
     
     # Test case 1: visitor is not None
-    def test_visit_functiondef_node(self):
+    def test_visitor_not_none(self):
         supported_node = ast.FunctionDef(
             name='example_function',
             args=None,
@@ -37,11 +37,11 @@ class TestBanditNodeVisitor(unittest.TestCase):
         self.visitor.visit(supported_node)
 
     # Test case 2: visitor is None
-    def test_visit_none_node(self):
+    def test_visitor_none(self):
         self.visitor.visit(None)
 
     # Test case 3: visitor is not None and debug is enabled
-    def test_visit_with_debug(self):
+    def test_visit_debug_enabled(self):
         self.visitor.debug = True
         supported_node = ast.FunctionDef(
             name='example_function',
