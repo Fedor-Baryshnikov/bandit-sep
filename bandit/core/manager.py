@@ -29,26 +29,26 @@ NOSEC_COMMENT = re.compile(r"#\s*nosec:?\s*(?P<tests>[^#]+)?#?")
 NOSEC_COMMENT_TESTS = re.compile(r"(?:(B\d+|[a-z\d_]+),?)+", re.IGNORECASE)
 PROGRESS_THRESHOLD = 50
 
-branches = {
-    'branch_201': False,
-    'branch_202': False
-}
+# branches = {
+#     'branch_201': False,
+#     'branch_202': False
+# }
 
-def show_coverage():
-    branch_hit = 0
-    total_branches = 0
+# def show_coverage():
+#     branch_hit = 0
+#     total_branches = 0
 
-    for branch, hit in branches.items():
+#     for branch, hit in branches.items():
 
-        if hit:
-            branch_hit += 1
-            print(f"Branch '{branch}' was hit")
-        else:
-            print(f"Branch '{branch}' was not hit")
+#         if hit:
+#             branch_hit += 1
+#             print(f"Branch '{branch}' was hit")
+#         else:
+#             print(f"Branch '{branch}' was not hit")
 
-        total_branches += 1
+#         total_branches += 1
 
-    print(f"Branch coverage is {branch_hit * 100 / total_branches}%\n")
+#     print(f"Branch coverage is {branch_hit * 100 / total_branches}%\n")
 
 class BanditManager:
     scope = []
@@ -98,10 +98,10 @@ class BanditManager:
         # "skip" is a tuple of name and reason, decode just the name
         for skip in self.skipped:
             if isinstance(skip[0], bytes):
-                branches["branch_201"] = True
+                # branches["branch_201"] = True
                 ret.append((skip[0].decode("utf-8"), skip[1]))
             else:
-                branches["branch_202"] = True
+                # branches["branch_202"] = True
                 ret.append(skip)
         return ret
 
@@ -521,19 +521,19 @@ def _parse_nosec_comment(comment):
 
     return test_ids
 
-from bandit.core import config
+# from bandit.core import config
 
-manager = BanditManager(config=config.BanditConfig(), agg_type="file", debug=False, verbose=False)
+# manager = BanditManager(config=config.BanditConfig(), agg_type="file", debug=False, verbose=False)
 
-manager.get_skipped()
-show_coverage()
-print("\n")
+# manager.get_skipped()
+# show_coverage()
+# print("\n")
 
-manager.skipped.append((bytes(1), "Alex"))
-manager.get_skipped()
-show_coverage()
-print("\n")
+# manager.skipped.append((bytes(1), "Alex"))
+# manager.get_skipped()
+# show_coverage()
+# print("\n")
 
-manager.skipped.append(("Alex", "Boring"))
-manager.get_skipped()
-show_coverage()
+# manager.skipped.append(("Alex", "Boring"))
+# manager.get_skipped()
+# show_coverage()
