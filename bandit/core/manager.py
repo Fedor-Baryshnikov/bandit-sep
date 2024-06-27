@@ -39,15 +39,9 @@ branch_coverage = {
     "branch_106": False, # else branch for output_format != "custom"
     "branch_107": False, # except branch
     # bandit/core/manager.py run_tests() coverage
-    "branch_108": False, # if branch for len(self.files_list) > PROGRESS_THRESHOLD and LOG.getEffectiveLevel() <= logging.INFO
-    "branch_109": False, # else branch for len(self.files_list) > PROGRESS_THRESHOLD and LOG.getEffectiveLevel() <= logging.INFO
-    "branch_110": False, # for loop
-    "branch_111": False, # try branch
-    "branch_112": False, # if branch for fname == "-"
-    "branch_113": False, # if branch for x == "-"
-    "branch_114": False, # else branch for x == "-"
-    "branch_115": False, # else branch for fname == "-"
-    "branch_116": False, # except branch
+    "branch_201": False, # if branch for len(self.files_list) > PROGRESS_THRESHOLD and LOG.getEffectiveLevel() <= logging.INFO
+    "branch_202": False, # else branch for len(self.files_list) > PROGRESS_THRESHOLD and LOG.getEffectiveLevel() <= logging.INFO
+    
     
 }
 
@@ -57,44 +51,44 @@ branch_coverage = {
 # def enable_printing():
 #     sys.stdout = sys.__stdout__
 
-# def print_coverage():
-#     hit_branches = 0
-#     tot_branches = 0
+def print_coverage():
+    hit_branches = 0
+    tot_branches = 0
     
-#     func1_hit_branches = 0
-#     func1_tot_branches = 0
+    func1_hit_branches = 0
+    func1_tot_branches = 0
     
-#     func2_hit_branches = 0
-#     func2_tot_branches = 0
+    func2_hit_branches = 0
+    func2_tot_branches = 0
     
-#     print("BRANCH COVERAGE RESULTS")
-#     print("===============================================")
-#     for branch, hit in branch_coverage.items():
-#         if int(branch.split("_")[1]) in range(100, 108):
-#             func1_hit_branches += 1 if hit else 0
-#             func1_tot_branches += 1
+    print("BRANCH COVERAGE RESULTS")
+    print("===============================================")
+    for branch, hit in branch_coverage.items():
+        if int(branch.split("_")[1]) in range(100, 108):
+            func1_hit_branches += 1 if hit else 0
+            func1_tot_branches += 1
         
-#         elif int(branch.split("_")[1]) in range(108, 117):
-#             func2_hit_branches += 1 if hit else 0
-#             func2_tot_branches += 1
+        elif int(branch.split("_")[1]) in range(201, 203):
+            func2_hit_branches += 1 if hit else 0
+            func2_tot_branches += 1
         
-#         print(f"[{'✓' if hit else ' '}] {branch}")
-#         hit_branches += 1 if hit else 0
-#         tot_branches += 1
+        print(f"[{'✓' if hit else ' '}] {branch}")
+        hit_branches += 1 if hit else 0
+        tot_branches += 1
         
-#     print("===============================================")
-#     print("output_results() coverage:")
-#     print(f"{func1_hit_branches}/{func1_tot_branches} branches hit")
-#     print(f"{func1_hit_branches/func1_tot_branches * 100}% branch coverage")
-#     print("-----------------------------------------------")
-#     print("run_tests() coverage:")
-#     print(f"{func2_hit_branches}/{func2_tot_branches} branches hit")
-#     print(f"{func2_hit_branches/func2_tot_branches * 100}% branch coverage")
-#     print("-----------------------------------------------")
-#     print("Total coverage:")
+    print("===============================================")
+    print("output_results() coverage:")
+    print(f"{func1_hit_branches}/{func1_tot_branches} branches hit")
+    print(f"{func1_hit_branches/func1_tot_branches * 100}% branch coverage")
+    print("-----------------------------------------------")
+    print("get_skipped() coverage:")
+    print(f"{func2_hit_branches}/{func2_tot_branches} branches hit")
+    print(f"{func2_hit_branches/func2_tot_branches * 100}% branch coverage")
+    print("-----------------------------------------------")
+    print("Total coverage:")
 
-#     print(f"{hit_branches}/{tot_branches} branches hit")
-#     print(f"{hit_branches/tot_branches * 100}% branch coverage")
+    print(f"{hit_branches}/{tot_branches} branches hit")
+    print(f"{hit_branches/tot_branches * 100}% branch coverage")
         
         
 #========================#
@@ -113,118 +107,73 @@ class BanditManager:
     # CUSTOM BRANCH COVERAGE TESTS #
     #==============================#
     
-    # def test_output_results_term_dumb(self):
-    #     # Test that output_results succeeds given a valid format
-    #     temp_directory = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-    #     lines = 5
-    #     sev_level = 1
-    #     conf_level = 1
-    #     output_filename = os.path.join(temp_directory, "_temp_output.txt")
-    #     output_format = "invalid"
-    #     os.environ["TERM"] = "dumb"
-    #     with open(output_filename, "w") as tmp_file:
-    #         self.output_results(
-    #             lines, sev_level, conf_level, tmp_file, output_format
-    #         )
+    def test_output_results_term_dumb(self):
+        # Test that output_results succeeds given a valid format
+        temp_directory = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+        lines = 5
+        sev_level = 1
+        conf_level = 1
+        output_filename = os.path.join(temp_directory, "_temp_output.txt")
+        output_format = "invalid"
+        os.environ["TERM"] = "dumb"
+        with open(output_filename, "w") as tmp_file:
+            self.output_results(
+                lines, sev_level, conf_level, tmp_file, output_format
+            )
     
-    # def test_output_results_term_not_dumb(self):
-    #     # Test that output_results succeeds given a valid format
-    #     temp_directory = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-    #     lines = 5
-    #     sev_level = 1
-    #     conf_level = 1
-    #     output_filename = os.path.join(temp_directory, "_temp_output.txt")
-    #     output_format = "invalid"
-    #     os.environ["TERM"] = "test"
-    #     with open(output_filename, "w") as tmp_file:
-    #         self.output_results(
-    #             lines, sev_level, conf_level, tmp_file, output_format
-    #         )
+    def test_output_results_term_not_dumb(self):
+        # Test that output_results succeeds given a valid format
+        temp_directory = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+        lines = 5
+        sev_level = 1
+        conf_level = 1
+        output_filename = os.path.join(temp_directory, "_temp_output.txt")
+        output_format = "invalid"
+        os.environ["TERM"] = "test"
+        with open(output_filename, "w") as tmp_file:
+            self.output_results(
+                lines, sev_level, conf_level, tmp_file, output_format
+            )
     
-    # def test_output_results_invalid_format(self):
-    #     # Test that output_results succeeds given a valid format
-    #     temp_directory = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-    #     lines = 5
-    #     sev_level = 1
-    #     conf_level = 1
-    #     output_filename = os.path.join(temp_directory, "_temp_output.txt")
-    #     output_format = "invalid"
-    #     with open(output_filename, "w") as tmp_file:
-    #         self.output_results(
-    #             lines, sev_level, conf_level, tmp_file, output_format
-    #         )
+    def test_output_results_invalid_format(self):
+        # Test that output_results succeeds given a valid format
+        temp_directory = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+        lines = 5
+        sev_level = 1
+        conf_level = 1
+        output_filename = os.path.join(temp_directory, "_temp_output.txt")
+        output_format = "invalid"
+        with open(output_filename, "w") as tmp_file:
+            self.output_results(
+                lines, sev_level, conf_level, tmp_file, output_format
+            )
     
-    # def test_output_results_custom_format(self):
-    #     # Test that output_results succeeds given a valid format
-    #     temp_directory = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-    #     lines = 5
-    #     sev_level = 1
-    #     conf_level = 1
-    #     output_filename = os.path.join(temp_directory, "_temp_output.txt")
-    #     output_format = "custom"
-    #     with open(output_filename, "w") as tmp_file:
-    #         self.output_results(
-    #             lines, sev_level, conf_level, tmp_file, output_format
-    #         )
+    def test_output_results_custom_format(self):
+        # Test that output_results succeeds given a valid format
+        temp_directory = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+        lines = 5
+        sev_level = 1
+        conf_level = 1
+        output_filename = os.path.join(temp_directory, "_temp_output.txt")
+        output_format = "custom"
+        with open(output_filename, "w") as tmp_file:
+            self.output_results(
+                lines, sev_level, conf_level, tmp_file, output_format
+            )
             
-    # def test_output_results_exception(self):
-    #     # Test that output_results succeeds given a valid format
-    #     lines = 5
-    #     sev_level = 1
-    #     conf_level = 1
-    #     output_format = "valid"
+    def test_output_results_exception(self):
+        # Test that output_results succeeds given a valid format
+        lines = 5
+        sev_level = 1
+        conf_level = 1
+        output_format = "valid"
         
-    #     try:
-    #         self.output_results(
-    #                 lines, sev_level, conf_level, 'test', output_format
-    #             ) 
-    #     except Exception:
-    #         pass
-
-    # def test_run_tests_threshold_and_logging_lvl(self):
-    #     # Test that bandit manager exits when there is a keyboard interrupt
-    #     temp_directory = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-    #     some_file = os.path.join(temp_directory, "some_code_file.py")
-    #     log_level = LOG.getEffectiveLevel()
-    #     LOG.setLevel(1)
-    #     with open(some_file, "w") as fd:
-    #         fd.write("some_code = x + 1")
-    #     self.files_list = [some_file] * (PROGRESS_THRESHOLD + 1)
-    #     self.run_tests()
-    #     LOG.setLevel(log_level)
-        
-    # def test_run_tests_random_file(self):
-    #     # Test that bandit manager exits when there is a keyboard interrupt
-    #     temp_directory = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-    #     some_file = os.path.join(temp_directory, "some_code_file.py")
-    #     with open(some_file, "w") as fd:
-    #         fd.write("some_code = x + 1")
-    #     self.files_list = [some_file]
-    #     self.run_tests()
-    
-    # def test_run_tests_os_ex(self):
-    #     try:
-    #         temp_directory = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-    #         some_file = os.path.join(temp_directory, "more_code_file.py")
-    #         # print(some_file)
-    #         with open(some_file, "w") as fd:
-    #             fd.write('print("Hello')
-    #         os.chmod(some_file, 0o000)
-    #         self.files_list = [some_file]
-    #         self.run_tests()
-    #         os.chmod(some_file, 0o777)
-    #     except PermissionError:
-    #         pass
-    
-    
-    # def test_run_tests_keyboard_in(self):
-    #     # Test that bandit manager exits when there is a keyboard interrupt
-    #     self.files_list = ["-", "something.py"]
-    #     try:
-    #         self.run_tests()
-    #     except KeyboardInterrupt:
-    #         pass
-        
+        try:
+            self.output_results(
+                    lines, sev_level, conf_level, 'test', output_format
+                ) 
+        except Exception:
+            pass    
         
     #==============================#
     # CUSTOM BRANCH COVERAGE TESTS #
@@ -277,10 +226,10 @@ class BanditManager:
         # "skip" is a tuple of name and reason, decode just the name
         for skip in self.skipped:
             if isinstance(skip[0], bytes):
-                # branch_get_skipped["branch_201"] = True
+                branch_coverage["branch_201"] = True
                 ret.append((skip[0].decode("utf-8"), skip[1]))
             else:
-                # branch_get_skipped["branch_202"] = True
+                branch_coverage["branch_202"] = True
                 ret.append(skip)
         return ret
 
@@ -735,49 +684,48 @@ def _parse_nosec_comment(comment):
 #========================#
 
 
-# from bandit.core import config
+from bandit.core import config
 
-# manager = BanditManager(config=config.BanditConfig(), agg_type="file", debug=False, verbose=False)
+manager = BanditManager(config=config.BanditConfig(), agg_type="file", debug=False, verbose=False)
 
-# print("BEFORE TESTS")
-# print_coverage()
+print("BEFORE TESTS")
+print_coverage()
 
-# # disable_printing()
-# manager.test_output_results_custom_format()
-# manager.test_output_results_invalid_format()
-# manager.test_output_results_exception()
-# manager.test_output_results_term_not_dumb()
-# manager.test_output_results_term_dumb()
-# # enable_printing()
+# disable_printing()
+manager.test_output_results_custom_format()
+print_coverage()
+manager.test_output_results_invalid_format()
+print_coverage()
+manager.test_output_results_exception()
+print_coverage()
+manager.test_output_results_term_not_dumb()
+print_coverage()
+manager.test_output_results_term_dumb()
+print_coverage()
+# enable_printing()
 
-# print("\nAFTER FUNC 1 TESTS")
-# print_coverage()
+
+print("\nAFTER output_results() TESTS")
+print_coverage()
 
 
-# print("\nAFTER FUNC 2 TESTS")
-# manager.test_run_tests_random_file()
-# manager.test_run_tests_keyboard_in()
-# manager.test_run_tests_os_ex()
-# manager.test_run_tests_threshold_and_logging_lvl()
+manager.get_skipped()
+print_coverage()
 
-# print_coverage()
+manager.skipped.append((bytes(1), "Alex"))
+manager.get_skipped()
+print_coverage()
+
+manager.skipped.append(("Alex", "Boring"))
+manager.get_skipped()
+print("\nAFTER get_skipped() TESTS")
+print_coverage()
+
 #========================#
 # CUSTOM BRANCH COVERAGE #
 #========================#
 
 
 
-# print("get_skipped() output:")
 
-# manager.get_skipped()
-# show_coverage()
-# print("\n")
 
-# manager.skipped.append((bytes(1), "Alex"))
-# manager.get_skipped()
-# show_coverage()
-# print("\n")
-
-# manager.skipped.append(("Alex", "Boring"))
-# manager.get_skipped()
-# show_coverage()
