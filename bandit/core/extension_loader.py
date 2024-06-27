@@ -46,7 +46,7 @@ class Manager:
                     file=sys.stderr,
                 )
                 return False
-            return True
+            return True 
 
         self.plugins = list(filter(test_has_id, list(self.plugins_mgr)))
         self.plugin_names = [plugin.name for plugin in self.plugins]
