@@ -180,6 +180,18 @@ class BanditManager:
                 ) 
         except Exception:
             pass
+
+    def test_run_tests_threshold_and_logging_lvl(self):
+        # Test that bandit manager exits when there is a keyboard interrupt
+        temp_directory = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+        some_file = os.path.join(temp_directory, "some_code_file.py")
+        log_level = LOG.getEffectiveLevel()
+        LOG.setLevel(1)
+        with open(some_file, "w") as fd:
+            fd.write("some_code = x + 1")
+        self.files_list = [some_file] * (PROGRESS_THRESHOLD + 1)
+        self.run_tests()
+        LOG.setLevel(log_level)
         
     def test_run_tests_random_file(self):
         # Test that bandit manager exits when there is a keyboard interrupt
@@ -470,6 +482,10 @@ class BanditManager:
         # if we have problems with a file, we'll remove it from the files_list
         # and add it to the skipped list instead
         new_files_list = list(self.files_list)
+        print(len(self.files_list) > PROGRESS_THRESHOLD)
+        print(LOG.getEffectiveLevel())
+        print(logging.INFO)
+        print(LOG.getEffectiveLevel() <= logging.INFO)
         if (
             len(self.files_list) > PROGRESS_THRESHOLD
             and LOG.getEffectiveLevel() <= logging.INFO
@@ -744,6 +760,7 @@ print("\nAFTER FUNC 2 TESTS")
 manager_tests_instance.test_run_tests_random_file()
 manager_tests_instance.test_run_tests_keyboard_in()
 manager_tests_instance.test_run_tests_os_ex()
+manager_tests_instance.test_run_tests_threshold_and_logging_lvl()
 
 print_coverage()
 #========================#
