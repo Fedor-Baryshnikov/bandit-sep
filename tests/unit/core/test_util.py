@@ -290,10 +290,10 @@ class UtilTests(testtools.TestCase):
     def test_path_for_function_bound_method(self):
         function = MagicMock()
         function.__func__ = MagicMock()
-        function.__func__.__code__ = "test_util.py"
+        function.__func__.__code__ = "test"
 
         path = b_utils.get_path_for_function(function)
-        self.assertEqual(path, sys.modules["test_util.py"].__file__)
+        self.assertEqual(path, sys.modules["test"].__file__)
      
     # Test case 2 running the function with a regular function
     def test_path_for_function_regular_function(self):
@@ -309,20 +309,20 @@ class UtilTests(testtools.TestCase):
     # Test case 4 running the function (module with a __file__)
     def test_path_for_function_module_file(self):
         mock_module = MagicMock()
-        mock_module.__file__ = "mock.py"
-        sys.modules["mock.py"] = mock_module
+        mock_module.__file__ = "test"
+        sys.modules["test_module"] = mock_module
         result_4 = b_utils.get_path_for_function(mock_module)
-        self.assertEqual(result_4, "mock.py")
-        del sys.modules["mock.py"]
+        self.assertEqual(result_4, "test")
+        del sys.modules["test_module"]
 
     # Test case 5 running the function (module without __file__)
     def test_path_for_function_module_no_file(self): 
         mock_module = MagicMock()
         mock_module.__file__ = None
-        sys.modules["mock.py"] = mock_module
+        sys.modules["test_module_no_file"] = mock_module
         result_5 = b_utils.get_path_for_function(mock_module)
         self.assertIsNone(result_5)
-        del sys.modules["mock.py"]
+        del sys.modules["test_module_no_file"]
 
     def test_escaped_representation_simple(self):
         res = b_utils.escaped_bytes_representation(b"ascii")
