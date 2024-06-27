@@ -4,8 +4,8 @@
 # SPDX-License-Identifier: Apache-2.0
 import linecache
 
+import bandit
 from bandit.core import constants
-
 class Cwe:
     NOTSET = 0
     IMPROPER_INPUT_VALIDATION = 20
@@ -59,8 +59,14 @@ class Cwe:
 
     def from_dict(self, data):
         if "id" in data:
+
+            # branches_from_dict['branch-10'] = True
+
             self.id = int(data["id"])
         else:
+
+            # branches_from_dict['branch-11'] = True
+
             self.id = Cwe.NOTSET
 
     def __eq__(self, other):
@@ -176,11 +182,14 @@ class Issue:
         lmax = lmin + len(self.linerange) + max_lines - 1
 
         if self.fname == "<stdin>":
+            # branches_get_code['branch_203'] = True
             self.fdata.seek(0)
             for line_num in range(1, lmin):
+                # branches_get_code['branch_204'] = True
                 self.fdata.readline()
 
         tmplt = "%i\t%s" if tabbed else "%i %s"
+
         for line in range(lmin, lmax):
             if self.fname == "<stdin>":
                 text = self.fdata.readline()
@@ -240,3 +249,48 @@ def issue_from_dict(data):
     i = Issue(severity=data["issue_severity"])
     i.from_dict(data)
     return i
+
+
+# # -- from_dict() -- #
+
+# print("from_dict() output:")
+
+# cwe = Cwe()
+# show_coverage(branches_from_dict)
+
+# cwe.from_dict({"id": 20})
+# show_coverage(branches_from_dict)
+
+# cwe.from_dict({"user_id": 40})
+# show_coverage(branches_from_dict)
+
+# # -- get_code() -- #
+
+# def _get_issue_instance(
+#     severity=bandit.MEDIUM,
+#     cwe=Cwe.MULTIPLE_BINDS,
+#     confidence=bandit.MEDIUM,
+# ):
+#     file = open("test_issue_data.txt", "r")
+
+#     new_issue = Issue(severity, cwe, confidence, "Test issue")
+#     new_issue.fname = "<stdin>"
+#     new_issue.test = "bandit_plugin"
+#     new_issue.fdata = file
+#     new_issue.test_id = "B999"
+#     new_issue.col_offset = 8
+#     new_issue.end_col_offset = 16
+#     new_issue.lineno = 3
+#     new_issue.linerange = [1, 2]
+
+#     return new_issue
+
+# new_issue = _get_issue_instance()
+
+# print("get_code() output:")
+
+# show_coverage(branches_get_code)
+
+# new_issue.get_code()
+
+# show_coverage(branches_get_code)
