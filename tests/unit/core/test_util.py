@@ -295,34 +295,34 @@ class UtilTests(testtools.TestCase):
         path = b_utils.get_path_for_function(function)
         self.assertEqual(path, sys.modules["test"].__file__)
      
-    # # Test case 2 running the function with a regular function
-    # def test_path_for_function_regular_function(self):
-    #     example_function = MagicMock()
-    #     result_2 = b_utils.get_path_for_function(example_function)
-    #     self.assertIsNotNone(result_2)
+    # Test case 2 running the function with a regular function
+    def test_path_for_function_regular_function(self):
+        example_function = MagicMock()
+        result_2 = b_utils.get_path_for_function(example_function)
+        self.assertIsNotNone(result_2)
 
-    # # Test case 3 running the function with a non-function object
-    # def test_path_for_function_non_function(self):
-    #     result_3 = b_utils.get_path_for_function(1)
-    #     self.assertIsNone(result_3)
+    # Test case 3 running the function with a non-function object
+    def test_path_for_function_non_function(self):
+        result_3 = b_utils.get_path_for_function(1)
+        self.assertIsNone(result_3)
 
-    # # Test case 4 running the function (module with a __file__)
-    # def test_path_for_function_module_file(self):
-    #     mock_module = MagicMock()
-    #     mock_module.__file__ = "test"
-    #     sys.modules["test_module"] = mock_module
-    #     result_4 = b_utils.get_path_for_function(mock_module)
-    #     self.assertEqual(result_4, "test")
-    #     del sys.modules["test_module"]
+    # Test case 4 running the function (module with a __file__)
+    def test_path_for_function_module_file(self):
+        mock_module = MagicMock()
+        mock_module.__file__ = "test"
+        sys.modules["test_module"] = mock_module
+        result_4 = b_utils.get_path_for_function(mock_module)
+        self.assertEqual(result_4, "test")
+        del sys.modules["test_module"]
 
-    # # Test case 5 running the function (module without __file__)
-    # def test_path_for_function_module_no_file(self): 
-    #     mock_module = MagicMock()
-    #     mock_module.__file__ = None
-    #     sys.modules["test_module_no_file"] = mock_module
-    #     result_5 = b_utils.get_path_for_function(mock_module)
-    #     self.assertIsNone(result_5)
-    #     del sys.modules["test_module_no_file"]
+    # Test case 5 running the function (module without __file__)
+    def test_path_for_function_module_no_file(self): 
+        mock_module = MagicMock()
+        mock_module.__file__ = None
+        sys.modules["test_module_no_file"] = mock_module
+        result_5 = b_utils.get_path_for_function(mock_module)
+        self.assertIsNone(result_5)
+        del sys.modules["test_module_no_file"]
 
     def test_escaped_representation_simple(self):
         res = b_utils.escaped_bytes_representation(b"ascii")
