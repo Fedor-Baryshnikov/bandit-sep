@@ -14,23 +14,23 @@ branch_coverage = {
     "branch_111": False, # test_name not in self.blacklist_by_name
 }
 
-# def print_coverage():
-#     hit_branches = 0
-#     tot_branches = 0
+def print_coverage():
+    hit_branches = 0
+    tot_branches = 0
     
-#     print("BRANCH COVERAGE RESULTS")
-#     print("===============================================")
-#     for branch, hit in branch_coverage.items():
+    print("BRANCH COVERAGE RESULTS")
+    print("===============================================")
+    for branch, hit in branch_coverage.items():
         
-#         print(f"[{'✓' if hit else ' '}] {branch}")
-#         hit_branches += 1 if hit else 0
-#         tot_branches += 1
+        print(f"[{'✓' if hit else ' '}] {branch}")
+        hit_branches += 1 if hit else 0
+        tot_branches += 1
         
-#     print("===============================================")
-#     print("Total coverage:")
+    print("===============================================")
+    print("Total coverage:")
 
-#     print(f"{hit_branches}/{tot_branches} branches hit")
-#     print(f"{hit_branches/tot_branches * 100}% branch coverage")
+    print(f"{hit_branches}/{tot_branches} branches hit")
+    print(f"{hit_branches/tot_branches * 100}% branch coverage")
 
 class Manager:
     # These IDs are for bandit built in tests
@@ -139,10 +139,18 @@ class Manager:
 # once, store them on the object, and have a module global object for
 # accessing them. After the first time this module is imported, it should save
 # this attribute on the module and not have to reload the entry-points.
-MANAGER = Manager()
 
+# -- Tests --
+
+# MANAGER = Manager()
 
 # print_coverage()
-# MANAGER.get_test_id("test_blacklisting")
 
+# MANAGER.get_test_id("hardcoded_sql_expressions")
+# print_coverage()
+
+# MANAGER.get_test_id("test_blacklisting")
+# print_coverage()
+
+# MANAGER.get_test_id("pickle")
 # print_coverage()
