@@ -28,53 +28,53 @@ branch_coverage = {
     "branch_309": False    # for else
 }
 
-# MyClass is used for testing purporses (test case 1)
-class MyClass:
-    def example_method(self):
-        return 1
+# # MyClass is used for testing purporses (test case 1)
+# class MyClass:
+#     def example_method(self):
+#         return 1
       
-eg_class = MyClass()
-eg_class = eg_class.example_method
+# eg_class = MyClass()
+# eg_class = eg_class.example_method
 
-# Example function is used for testing purposes (test case 2)
-def test_2_function():
-    return 0
+# # Example function is used for testing purposes (test case 2)
+# def test_2_function():
+#     return 0
 
-# Creating a test function and setting its module to a mock module with __file__ (test case 4)
-def test_4_function():
-    pass
+# # Creating a test function and setting its module to a mock module with __file__ (test case 4)
+# def test_4_function():
+#     pass
 
-mock_module = MagicMock()
-mock_module.__file__ = "mock_file.py"
-sys.modules["mock_module"] = mock_module
-test_4_function.__module__ = "mock_module"
+# mock_module = MagicMock()
+# mock_module.__file__ = "mock_file.py"
+# sys.modules["mock_module"] = mock_module
+# test_4_function.__module__ = "mock_module"
 
-# Creating a test function and setting its module to a mock module without __file__ (test case 5)
-def test_5_function():
-    pass
+# # Creating a test function and setting its module to a mock module without __file__ (test case 5)
+# def test_5_function():
+#     pass
 
-mock_module_no_file = MagicMock()
-del mock_module_no_file.__file__  # Ensuring there is no __file__ attribute
-sys.modules["mock_module_no_file"] = mock_module_no_file
-test_5_function.__module__ = "mock_module_no_file"
+# mock_module_no_file = MagicMock()
+# del mock_module_no_file.__file__  # Ensuring there is no __file__ attribute
+# sys.modules["mock_module_no_file"] = mock_module_no_file
+# test_5_function.__module__ = "mock_module_no_file"
 
-# Function to print the coverage of the branches 
-def print_coverage():
-    branch_hit = 0
-    branch_total = 0
+# # Function to print the coverage of the branches 
+# def print_coverage():
+#     branch_hit = 0
+#     branch_total = 0
 
-    for branch, hit in branch_coverage.items():
+#     for branch, hit in branch_coverage.items():
 
-        if hit:
-            branch_hit += 1
-            print (f"Branch {branch} hit")
+#         if hit:
+#             branch_hit += 1
+#             print (f"Branch {branch} hit")
 
-        else:
-            print (f"Branch {branch} not hit")
+#         else:
+#             print (f"Branch {branch} not hit")
 
-        branch_total += 1
+#         branch_total += 1
 
-    print(f"Branch coverage is {branch_hit * 100 / branch_total}%\n")
+#     print(f"Branch coverage is {branch_hit * 100 / branch_total}%\n")
 
 def _get_attr_qual_name(node, aliases):
     """Get a the full name for the attribute node.
@@ -442,32 +442,32 @@ def get_nosec(nosec_lines, context):
 
 #################### Test cases ####################
 
-#Runnimg test case 1 (bound method)
-print("Running test case 1 (bound method):")
-result_1 = get_path_for_function(eg_class)
-print(f"Result from get_path_for_function:")
-print_coverage()
+# #Runnimg test case 1 (bound method)
+# print("Running test case 1 (bound method):")
+# result_1 = get_path_for_function(eg_class)
+# print(f"Result from get_path_for_function:")
+# print_coverage()
 
-#Running test case 2 (regular function)
-print("Running test case 2 (regular function):")
-result_2 = get_path_for_function(test_2_function)
-print(f"Result from get_path_for_function:")
-print_coverage()
+# #Running test case 2 (regular function)
+# print("Running test case 2 (regular function):")
+# result_2 = get_path_for_function(test_2_function)
+# print(f"Result from get_path_for_function:")
+# print_coverage()
 
-# Runnin test case 3 (non-function object)
-print("Running test case 3 (non-function object):")
-result_3 = get_path_for_function(0)
-print(f"Result from get_path_for_function")
-print_coverage()
+# # Runnin test case 3 (non-function object)
+# print("Running test case 3 (non-function object):")
+# result_3 = get_path_for_function(0)
+# print(f"Result from get_path_for_function")
+# print_coverage()
 
-# Running test case 4 (module with __file__)
-print("Running test case 4 (module with __file__):")
-result_4 = get_path_for_function(test_4_function)
-print(f"Result from get_path_for_function")
-print_coverage()
+# # Running test case 4 (module with __file__)
+# print("Running test case 4 (module with __file__):")
+# result_4 = get_path_for_function(test_4_function)
+# print(f"Result from get_path_for_function")
+# print_coverage()
 
-# Running test case 5 (module without __file__)
-print("Running test case 5 (module without __file__):")
-result_5 = get_path_for_function(test_5_function)
-print(f"Result from get_path_for_function")
-print_coverage()
+# # Running test case 5 (module without __file__)
+# print("Running test case 5 (module without __file__):")
+# result_5 = get_path_for_function(test_5_function)
+# print(f"Result from get_path_for_function")
+# print_coverage()
