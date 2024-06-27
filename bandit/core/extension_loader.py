@@ -14,23 +14,23 @@ branch_coverage = {
     "branch_111": False, # test_name not in self.blacklist_by_name
 }
 
-def print_coverage():
-    hit_branches = 0
-    tot_branches = 0
+# def print_coverage():
+#     hit_branches = 0
+#     tot_branches = 0
     
-    print("BRANCH COVERAGE RESULTS")
-    print("===============================================")
-    for branch, hit in branch_coverage.items():
+#     print("BRANCH COVERAGE RESULTS")
+#     print("===============================================")
+#     for branch, hit in branch_coverage.items():
         
-        print(f"[{'✓' if hit else ' '}] {branch}")
-        hit_branches += 1 if hit else 0
-        tot_branches += 1
+#         print(f"[{'✓' if hit else ' '}] {branch}")
+#         hit_branches += 1 if hit else 0
+#         tot_branches += 1
         
-    print("===============================================")
-    print("Total coverage:")
+#     print("===============================================")
+#     print("Total coverage:")
 
-    print(f"{hit_branches}/{tot_branches} branches hit")
-    print(f"{hit_branches/tot_branches * 100}% branch coverage")
+#     print(f"{hit_branches}/{tot_branches} branches hit")
+#     print(f"{hit_branches/tot_branches * 100}% branch coverage")
 
 class Manager:
     # These IDs are for bandit built in tests

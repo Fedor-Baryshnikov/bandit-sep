@@ -43,44 +43,44 @@ branch_coverage = {
     "branch_202": False, # else branch for isinstance(skip[0], bytes)   
 }
 
-def print_coverage():
-    hit_branches = 0
-    tot_branches = 0
+# def print_coverage():
+#     hit_branches = 0
+#     tot_branches = 0
     
-    func1_hit_branches = 0
-    func1_tot_branches = 0
+#     func1_hit_branches = 0
+#     func1_tot_branches = 0
     
-    func2_hit_branches = 0
-    func2_tot_branches = 0
+#     func2_hit_branches = 0
+#     func2_tot_branches = 0
     
-    print("BRANCH COVERAGE RESULTS")
-    print("===============================================")
-    for branch, hit in branch_coverage.items():
-        if int(branch.split("_")[1]) in range(100, 108):
-            func1_hit_branches += 1 if hit else 0
-            func1_tot_branches += 1
+#     print("BRANCH COVERAGE RESULTS")
+#     print("===============================================")
+#     for branch, hit in branch_coverage.items():
+#         if int(branch.split("_")[1]) in range(100, 108):
+#             func1_hit_branches += 1 if hit else 0
+#             func1_tot_branches += 1
         
-        elif int(branch.split("_")[1]) in range(201, 203):
-            func2_hit_branches += 1 if hit else 0
-            func2_tot_branches += 1
+#         elif int(branch.split("_")[1]) in range(201, 203):
+#             func2_hit_branches += 1 if hit else 0
+#             func2_tot_branches += 1
         
-        print(f"[{'✓' if hit else ' '}] {branch}")
-        hit_branches += 1 if hit else 0
-        tot_branches += 1
+#         print(f"[{'✓' if hit else ' '}] {branch}")
+#         hit_branches += 1 if hit else 0
+#         tot_branches += 1
         
-    print("===============================================")
-    print("output_results() coverage:")
-    print(f"{func1_hit_branches}/{func1_tot_branches} branches hit")
-    print(f"{func1_hit_branches/func1_tot_branches * 100}% branch coverage")
-    print("-----------------------------------------------")
-    print("get_skipped() coverage:")
-    print(f"{func2_hit_branches}/{func2_tot_branches} branches hit")
-    print(f"{func2_hit_branches/func2_tot_branches * 100}% branch coverage")
-    print("-----------------------------------------------")
-    print("Total coverage:")
+#     print("===============================================")
+#     print("output_results() coverage:")
+#     print(f"{func1_hit_branches}/{func1_tot_branches} branches hit")
+#     print(f"{func1_hit_branches/func1_tot_branches * 100}% branch coverage")
+#     print("-----------------------------------------------")
+#     print("get_skipped() coverage:")
+#     print(f"{func2_hit_branches}/{func2_tot_branches} branches hit")
+#     print(f"{func2_hit_branches/func2_tot_branches * 100}% branch coverage")
+#     print("-----------------------------------------------")
+#     print("Total coverage:")
 
-    print(f"{hit_branches}/{tot_branches} branches hit")
-    print(f"{hit_branches/tot_branches * 100}% branch coverage")
+#     print(f"{hit_branches}/{tot_branches} branches hit")
+#     print(f"{hit_branches/tot_branches * 100}% branch coverage")
         
         
 #========================#
@@ -99,73 +99,73 @@ class BanditManager:
     # CUSTOM BRANCH COVERAGE TESTS #
     #==============================#
     
-    # def test_output_results_term_dumb(self):
-    #     # Test that output_results succeeds given a valid format
-    #     temp_directory = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-    #     lines = 5
-    #     sev_level = 1
-    #     conf_level = 1
-    #     output_filename = os.path.join(temp_directory, "_temp_output.txt")
-    #     output_format = "invalid"
-    #     os.environ["TERM"] = "dumb"
-    #     with open(output_filename, "w") as tmp_file:
-    #         self.output_results(
-    #             lines, sev_level, conf_level, tmp_file, output_format
-    #         )
+    def test_output_results_term_dumb(self):
+        # Test that output_results succeeds given a valid format
+        temp_directory = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+        lines = 5
+        sev_level = 1
+        conf_level = 1
+        output_filename = os.path.join(temp_directory, "_temp_output.txt")
+        output_format = "invalid"
+        os.environ["TERM"] = "dumb"
+        with open(output_filename, "w") as tmp_file:
+            self.output_results(
+                lines, sev_level, conf_level, tmp_file, output_format
+            )
     
-    # def test_output_results_term_not_dumb(self):
-    #     # Test that output_results succeeds given a valid format
-    #     temp_directory = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-    #     lines = 5
-    #     sev_level = 1
-    #     conf_level = 1
-    #     output_filename = os.path.join(temp_directory, "_temp_output.txt")
-    #     output_format = "invalid"
-    #     os.environ["TERM"] = "test"
-    #     with open(output_filename, "w") as tmp_file:
-    #         self.output_results(
-    #             lines, sev_level, conf_level, tmp_file, output_format
-    #         )
+    def test_output_results_term_not_dumb(self):
+        # Test that output_results succeeds given a valid format
+        temp_directory = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+        lines = 5
+        sev_level = 1
+        conf_level = 1
+        output_filename = os.path.join(temp_directory, "_temp_output.txt")
+        output_format = "invalid"
+        os.environ["TERM"] = "test"
+        with open(output_filename, "w") as tmp_file:
+            self.output_results(
+                lines, sev_level, conf_level, tmp_file, output_format
+            )
     
-    # def test_output_results_invalid_format(self):
-    #     # Test that output_results succeeds given a valid format
-    #     temp_directory = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-    #     lines = 5
-    #     sev_level = 1
-    #     conf_level = 1
-    #     output_filename = os.path.join(temp_directory, "_temp_output.txt")
-    #     output_format = "invalid"
-    #     with open(output_filename, "w") as tmp_file:
-    #         self.output_results(
-    #             lines, sev_level, conf_level, tmp_file, output_format
-    #         )
+    def test_output_results_invalid_format(self):
+        # Test that output_results succeeds given a valid format
+        temp_directory = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+        lines = 5
+        sev_level = 1
+        conf_level = 1
+        output_filename = os.path.join(temp_directory, "_temp_output.txt")
+        output_format = "invalid"
+        with open(output_filename, "w") as tmp_file:
+            self.output_results(
+                lines, sev_level, conf_level, tmp_file, output_format
+            )
     
-    # def test_output_results_custom_format(self):
-    #     # Test that output_results succeeds given a valid format
-    #     temp_directory = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-    #     lines = 5
-    #     sev_level = 1
-    #     conf_level = 1
-    #     output_filename = os.path.join(temp_directory, "_temp_output.txt")
-    #     output_format = "custom"
-    #     with open(output_filename, "w") as tmp_file:
-    #         self.output_results(
-    #             lines, sev_level, conf_level, tmp_file, output_format
-    #         )
+    def test_output_results_custom_format(self):
+        # Test that output_results succeeds given a valid format
+        temp_directory = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+        lines = 5
+        sev_level = 1
+        conf_level = 1
+        output_filename = os.path.join(temp_directory, "_temp_output.txt")
+        output_format = "custom"
+        with open(output_filename, "w") as tmp_file:
+            self.output_results(
+                lines, sev_level, conf_level, tmp_file, output_format
+            )
             
-    # def test_output_results_exception(self):
-    #     # Test that output_results succeeds given a valid format
-    #     lines = 5
-    #     sev_level = 1
-    #     conf_level = 1
-    #     output_format = "valid"
+    def test_output_results_exception(self):
+        # Test that output_results succeeds given a valid format
+        lines = 5
+        sev_level = 1
+        conf_level = 1
+        output_format = "valid"
         
-    #     try:
-    #         self.output_results(
-    #                 lines, sev_level, conf_level, 'test', output_format
-    #             ) 
-    #     except Exception:
-    #         pass    
+        try:
+            self.output_results(
+                    lines, sev_level, conf_level, 'test', output_format
+                ) 
+        except Exception:
+            pass    
         
     #==============================#
     # CUSTOM BRANCH COVERAGE TESTS #
@@ -676,12 +676,12 @@ def _parse_nosec_comment(comment):
 #========================#
 
 
-from bandit.core import config
+# from bandit.core import config
 
-manager = BanditManager(config=config.BanditConfig(), agg_type="file", debug=False, verbose=False)
+# manager = BanditManager(config=config.BanditConfig(), agg_type="file", debug=False, verbose=False)
 
-print("BEFORE TESTS")
-print_coverage()
+# print("BEFORE TESTS")
+# print_coverage()
 
 # manager.test_output_results_custom_format()
 # print_coverage()
