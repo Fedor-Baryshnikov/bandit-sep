@@ -149,7 +149,7 @@ def _get_issue_instance(
 
     return new_issue
 
-# def test_get_code():
-#     new_issue = _get_issue_instance()
+def test_get_code():
+    new_issue = _get_issue_instance()
 
-#     new_issue.get_code()
+    new_issue.get_code()
