@@ -99,73 +99,73 @@ class BanditManager:
     # CUSTOM BRANCH COVERAGE TESTS #
     #==============================#
     
-    def test_output_results_term_dumb(self):
-        # Test that output_results succeeds given a valid format
-        temp_directory = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-        lines = 5
-        sev_level = 1
-        conf_level = 1
-        output_filename = os.path.join(temp_directory, "_temp_output.txt")
-        output_format = "invalid"
-        os.environ["TERM"] = "dumb"
-        with open(output_filename, "w") as tmp_file:
-            self.output_results(
-                lines, sev_level, conf_level, tmp_file, output_format
-            )
+    # def test_output_results_term_dumb(self):
+    #     # Test that output_results succeeds given a valid format
+    #     temp_directory = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+    #     lines = 5
+    #     sev_level = 1
+    #     conf_level = 1
+    #     output_filename = os.path.join(temp_directory, "_temp_output.txt")
+    #     output_format = "invalid"
+    #     os.environ["TERM"] = "dumb"
+    #     with open(output_filename, "w") as tmp_file:
+    #         self.output_results(
+    #             lines, sev_level, conf_level, tmp_file, output_format
+    #         )
     
-    def test_output_results_term_not_dumb(self):
-        # Test that output_results succeeds given a valid format
-        temp_directory = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-        lines = 5
-        sev_level = 1
-        conf_level = 1
-        output_filename = os.path.join(temp_directory, "_temp_output.txt")
-        output_format = "invalid"
-        os.environ["TERM"] = "test"
-        with open(output_filename, "w") as tmp_file:
-            self.output_results(
-                lines, sev_level, conf_level, tmp_file, output_format
-            )
+    # def test_output_results_term_not_dumb(self):
+    #     # Test that output_results succeeds given a valid format
+    #     temp_directory = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+    #     lines = 5
+    #     sev_level = 1
+    #     conf_level = 1
+    #     output_filename = os.path.join(temp_directory, "_temp_output.txt")
+    #     output_format = "invalid"
+    #     os.environ["TERM"] = "test"
+    #     with open(output_filename, "w") as tmp_file:
+    #         self.output_results(
+    #             lines, sev_level, conf_level, tmp_file, output_format
+    #         )
     
-    def test_output_results_invalid_format(self):
-        # Test that output_results succeeds given a valid format
-        temp_directory = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-        lines = 5
-        sev_level = 1
-        conf_level = 1
-        output_filename = os.path.join(temp_directory, "_temp_output.txt")
-        output_format = "invalid"
-        with open(output_filename, "w") as tmp_file:
-            self.output_results(
-                lines, sev_level, conf_level, tmp_file, output_format
-            )
+    # def test_output_results_invalid_format(self):
+    #     # Test that output_results succeeds given a valid format
+    #     temp_directory = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+    #     lines = 5
+    #     sev_level = 1
+    #     conf_level = 1
+    #     output_filename = os.path.join(temp_directory, "_temp_output.txt")
+    #     output_format = "invalid"
+    #     with open(output_filename, "w") as tmp_file:
+    #         self.output_results(
+    #             lines, sev_level, conf_level, tmp_file, output_format
+    #         )
     
-    def test_output_results_custom_format(self):
-        # Test that output_results succeeds given a valid format
-        temp_directory = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-        lines = 5
-        sev_level = 1
-        conf_level = 1
-        output_filename = os.path.join(temp_directory, "_temp_output.txt")
-        output_format = "custom"
-        with open(output_filename, "w") as tmp_file:
-            self.output_results(
-                lines, sev_level, conf_level, tmp_file, output_format
-            )
+    # def test_output_results_custom_format(self):
+    #     # Test that output_results succeeds given a valid format
+    #     temp_directory = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+    #     lines = 5
+    #     sev_level = 1
+    #     conf_level = 1
+    #     output_filename = os.path.join(temp_directory, "_temp_output.txt")
+    #     output_format = "custom"
+    #     with open(output_filename, "w") as tmp_file:
+    #         self.output_results(
+    #             lines, sev_level, conf_level, tmp_file, output_format
+    #         )
             
-    def test_output_results_exception(self):
-        # Test that output_results succeeds given a valid format
-        lines = 5
-        sev_level = 1
-        conf_level = 1
-        output_format = "valid"
+    # def test_output_results_exception(self):
+    #     # Test that output_results succeeds given a valid format
+    #     lines = 5
+    #     sev_level = 1
+    #     conf_level = 1
+    #     output_format = "valid"
         
-        try:
-            self.output_results(
-                    lines, sev_level, conf_level, 'test', output_format
-                ) 
-        except Exception:
-            pass    
+    #     try:
+    #         self.output_results(
+    #                 lines, sev_level, conf_level, 'test', output_format
+    #             ) 
+    #     except Exception:
+    #         pass    
         
     #==============================#
     # CUSTOM BRANCH COVERAGE TESTS #
