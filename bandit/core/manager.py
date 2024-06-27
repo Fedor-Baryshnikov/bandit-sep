@@ -188,10 +188,28 @@ class BanditManager:
         self.files_list = [some_file]
         self.run_tests()
     
+    def test_run_tests_os_ex(self):
+        try:
+            temp_directory = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+            some_file = os.path.join(temp_directory, "more_code_file.py")
+            # print(some_file)
+            with open(some_file, "w") as fd:
+                fd.write('print("Hello')
+            os.chmod(some_file, 0o000)
+            self.files_list = [some_file]
+            self.run_tests()
+            os.chmod(some_file, 0o777)
+        except PermissionError:
+            pass
+    
+    
     def test_run_tests_keyboard_in(self):
         # Test that bandit manager exits when there is a keyboard interrupt
         self.files_list = ["-"]
-        self.run_tests()
+        try:
+            self.run_tests()
+        except KeyboardInterrupt:
+            pass
         
         
     #==============================#
@@ -473,6 +491,7 @@ class BanditManager:
                         "<stdin>" if x == "-" else x for x in new_files_list
                     ]
                     self._parse_file("<stdin>", fdata, new_files_list)
+    
                 else:
                     branch_coverage["branch_113"] = True        # COVERAGE
                     with open(fname, "rb") as fdata:
@@ -715,7 +734,8 @@ print_coverage()
 
 print("\nAFTER FUNC 2 TESTS")
 manager_tests_instance.test_run_tests_random_file()
-# manager_tests_instance.test_run_tests_keyboard_in()
+manager_tests_instance.test_run_tests_keyboard_in()
+manager_tests_instance.test_run_tests_os_ex()
 
 print_coverage()
 #========================#
