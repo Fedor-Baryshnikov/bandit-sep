@@ -20,3 +20,5 @@ doc/source/api
 AUTHORS
 _temp_output.txt
 .hypothesis/unicode_data/13.0.0/charmap.json.gz
+more_code_file.py
+some_code_file.py
