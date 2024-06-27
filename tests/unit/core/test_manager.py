@@ -234,6 +234,22 @@ class ManagerTests(testtools.TestCase):
             )                                                                                                               # CUSTOM CODE
         self.assertTrue(os.path.isfile(output_filename))                                                                    # CUSTOM CODE
 
+    @mock.patch('sys.stdout.isatty')                                                                                        # DEFUNCT CUSTOM CODE 
+    @mock.patch.dict('os.environ', {'TERM': 'dumb', 'NO_COLOR': 'None'})                                                    # DEFUNCT CUSTOM CODE 
+    def test_output_results_stdout_and_env_var(self, isatty):                                                               # DEFUNCT CUSTOM CODE 
+        isatty.return_value = True                                                                                          # DEFUNCT CUSTOM CODE 
+        temp_directory = self.useFixture(fixtures.TempDir()).path                                                           # DEFUNCT CUSTOM CODE 
+        lines = 5                                                                                                           # DEFUNCT CUSTOM CODE 
+        sev_level = constants.LOW                                                                                           # DEFUNCT CUSTOM CODE 
+        conf_level = constants.LOW                                                                                          # DEFUNCT CUSTOM CODE 
+        output_filename = os.path.join(temp_directory, "_temp_output.txt")                                                  # DEFUNCT CUSTOM CODE 
+        output_format = "txt"                                                                                               # DEFUNCT CUSTOM CODE 
+        with open(output_filename, "w") as tmp_file:                                                                        # DEFUNCT CUSTOM CODE 
+            self.manager.output_results(                                                                                    # DEFUNCT CUSTOM CODE 
+                lines, sev_level, conf_level, tmp_file, output_format                                                       # DEFUNCT CUSTOM CODE 
+            )                                                                                                               # DEFUNCT CUSTOM CODE 
+        self.assertTrue(os.path.isfile(output_filename))                                                                    # DEFUNCT CUSTOM CODE 
+
     def test_output_results_exception(self):                                                                                # CUSTOM CODE
         lines = 5                                                                                                           # CUSTOM CODE
         sev_level = constants.LOW                                                                                           # CUSTOM CODE
