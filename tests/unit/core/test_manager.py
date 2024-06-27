@@ -220,26 +220,26 @@ class ManagerTests(testtools.TestCase):
             )
         self.assertTrue(os.path.isfile(output_filename))
     
-    def test_output_results_custom_format(self):                                                    # CUSTOM CODE
-        # Test that output_results succeeds given a valid format                                    # CUSTOM CODE
-        temp_directory = self.useFixture(fixtures.TempDir()).path                                   # CUSTOM CODE
-        lines = 5                                                                                   # CUSTOM CODE
-        sev_level = constants.LOW                                                                   # CUSTOM CODE
-        conf_level = constants.LOW                                                                  # CUSTOM CODE
-        output_filename = os.path.join(temp_directory, "_temp_output.txt")                          # CUSTOM CODE
-        output_format = "custom"                                                                    # CUSTOM CODE
-        with open(output_filename, "w") as tmp_file:                                                # CUSTOM CODE
-            self.manager.output_results(                                                            # CUSTOM CODE
-                lines, sev_level, conf_level, tmp_file, output_format                               # CUSTOM CODE
-            )                                                                                       # CUSTOM CODE
-        self.assertTrue(os.path.isfile(output_filename))                                            # CUSTOM CODE
-                                                                                                    # CUSTOM CODE
-    def test_output_results_exception(self):                                                        # CUSTOM CODE
-        lines = 5                                                                                   # CUSTOM CODE
-        sev_level = constants.LOW                                                                   # CUSTOM CODE
-        conf_level = constants.LOW                                                                  # CUSTOM CODE
-        output_format = "custom"                                                                    # CUSTOM CODE
-        self.manager.output_results(lines, sev_level, conf_level, "empty", output_format)           # CUSTOM CODE
+    def test_output_results_custom_format(self):                                                                            # CUSTOM CODE
+        # Test that output_results succeeds given a valid format                                                            # CUSTOM CODE
+        temp_directory = self.useFixture(fixtures.TempDir()).path                                                           # CUSTOM CODE
+        lines = 5                                                                                                           # CUSTOM CODE
+        sev_level = constants.LOW                                                                                           # CUSTOM CODE
+        conf_level = constants.LOW                                                                                          # CUSTOM CODE
+        output_filename = os.path.join(temp_directory, "_temp_output.txt")                                                  # CUSTOM CODE
+        output_format = "custom"                                                                                            # CUSTOM CODE
+        with open(output_filename, "w") as tmp_file:                                                                        # CUSTOM CODE
+            self.manager.output_results(                                                                                    # CUSTOM CODE
+                lines, sev_level, conf_level, tmp_file, output_format                                                       # CUSTOM CODE
+            )                                                                                                               # CUSTOM CODE
+        self.assertTrue(os.path.isfile(output_filename))                                                                    # CUSTOM CODE
+
+    def test_output_results_exception(self):                                                                                # CUSTOM CODE
+        lines = 5                                                                                                           # CUSTOM CODE
+        sev_level = constants.LOW                                                                                           # CUSTOM CODE
+        conf_level = constants.LOW                                                                                          # CUSTOM CODE
+        output_format = "custom"                                                                                            # CUSTOM CODE
+        self.assertRaises(RuntimeError, self.manager.output_results, lines, sev_level, conf_level, "empty", output_format)  # CUSTOM CODE
         
     @mock.patch("os.path.isdir")
     def test_discover_files_recurse_skip(self, isdir):
