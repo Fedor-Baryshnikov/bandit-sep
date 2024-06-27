@@ -277,8 +277,10 @@ class BanditManager:
         # "skip" is a tuple of name and reason, decode just the name
         for skip in self.skipped:
             if isinstance(skip[0], bytes):
+                # branch_get_skipped["branch_201"] = True
                 ret.append((skip[0].decode("utf-8"), skip[1]))
             else:
+                # branch_get_skipped["branch_202"] = True
                 ret.append(skip)
         return ret
 
@@ -735,17 +737,17 @@ def _parse_nosec_comment(comment):
 
 # from bandit.core import config
 
-# manager_tests_instance = BanditManager(config=config.BanditConfig(), agg_type="file", debug=False, verbose=False)
+# manager = BanditManager(config=config.BanditConfig(), agg_type="file", debug=False, verbose=False)
 
 # print("BEFORE TESTS")
 # print_coverage()
 
 # # disable_printing()
-# manager_tests_instance.test_output_results_custom_format()
-# manager_tests_instance.test_output_results_invalid_format()
-# manager_tests_instance.test_output_results_exception()
-# manager_tests_instance.test_output_results_term_not_dumb()
-# manager_tests_instance.test_output_results_term_dumb()
+# manager.test_output_results_custom_format()
+# manager.test_output_results_invalid_format()
+# manager.test_output_results_exception()
+# manager.test_output_results_term_not_dumb()
+# manager.test_output_results_term_dumb()
 # # enable_printing()
 
 # print("\nAFTER FUNC 1 TESTS")
@@ -753,12 +755,29 @@ def _parse_nosec_comment(comment):
 
 
 # print("\nAFTER FUNC 2 TESTS")
-# manager_tests_instance.test_run_tests_random_file()
-# manager_tests_instance.test_run_tests_keyboard_in()
-# manager_tests_instance.test_run_tests_os_ex()
-# manager_tests_instance.test_run_tests_threshold_and_logging_lvl()
+# manager.test_run_tests_random_file()
+# manager.test_run_tests_keyboard_in()
+# manager.test_run_tests_os_ex()
+# manager.test_run_tests_threshold_and_logging_lvl()
 
 # print_coverage()
 #========================#
 # CUSTOM BRANCH COVERAGE #
 #========================#
+
+
+
+# print("get_skipped() output:")
+
+# manager.get_skipped()
+# show_coverage()
+# print("\n")
+
+# manager.skipped.append((bytes(1), "Alex"))
+# manager.get_skipped()
+# show_coverage()
+# print("\n")
+
+# manager.skipped.append(("Alex", "Boring"))
+# manager.get_skipped()
+# show_coverage()

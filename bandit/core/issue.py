@@ -6,6 +6,10 @@ import linecache
 
 from bandit.core import constants
 
+# branch_get_skipped = {
+#     'branch_201': False,
+#     'branch_202': False
+# }
 
 class Cwe:
     NOTSET = 0
@@ -121,7 +125,7 @@ class Issue:
 
     def __eq__(self, other):
         # if the issue text, severity, confidence, and filename match, it's
-        # the same issue from our perspective
+        # the same issue from our perspectivebra
         match_types = [
             "text",
             "severity",

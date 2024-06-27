@@ -40,6 +40,13 @@ class ManagerTests(testtools.TestCase):
             config=self.config, agg_type="file", debug=False, verbose=False
         )
 
+    def test_get_skipped_1(self):
+        m = manager.BanditManager(config=config.BanditConfig(), agg_type="file", debug=False, verbose=False)
+
+        m.skipped.append((bytes(1), "Alex"))
+
+        self.assertEqual([('\x00', 'Alex')], m.get_skipped())
+
     def test_create_manager(self):
         # make sure we can create a manager
         self.assertEqual(False, self.manager.debug)
