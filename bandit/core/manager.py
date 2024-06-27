@@ -74,7 +74,7 @@ def print_coverage():
             func1_hit_branches += 1 if hit else 0
             func1_tot_branches += 1
         
-        elif int(branch.split("_")[1]) in range(108, 115):
+        elif int(branch.split("_")[1]) in range(108, 117):
             func2_hit_branches += 1 if hit else 0
             func2_tot_branches += 1
         
@@ -207,7 +207,7 @@ class BanditManager:
     
     def test_run_tests_keyboard_in(self):
         # Test that bandit manager exits when there is a keyboard interrupt
-        self.files_list = ["-", "thing.py", "dumb.py"]
+        self.files_list = ["-", "something.py"]
         try:
             self.run_tests()
         except KeyboardInterrupt:
@@ -489,11 +489,11 @@ class BanditManager:
                     branch_coverage["branch_112"] = True        # COVERAGE
                     open_fd = os.fdopen(sys.stdin.fileno(), "rb", 0)
                     fdata = io.BytesIO(open_fd.read())
-                    for x in new_files_list:
-                        if x == "-":
-                            branch_coverage["branch_113"] = True        # COVERAGE
-                        else:
-                            branch_coverage["branch_114"] = True        # COVERAGE
+                    for x in new_files_list:                                        # COVERAGE
+                        if x == "-":                                                # COVERAGE
+                            branch_coverage["branch_113"] = True                    # COVERAGE
+                        else:                                                       # COVERAGE
+                            branch_coverage["branch_114"] = True                    # COVERAGE
                     new_files_list = [
                         "<stdin>" if x == "-" else x for x in new_files_list
                     ]
