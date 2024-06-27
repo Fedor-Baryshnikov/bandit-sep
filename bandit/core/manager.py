@@ -429,26 +429,17 @@ class BanditManager:
             len(self.files_list) > PROGRESS_THRESHOLD
             and LOG.getEffectiveLevel() <= logging.INFO
         ):
-            branch_coverage["branch_108"] = True                # COVERAGE
             files = progress.track(self.files_list)
         else:
-            branch_coverage["branch_109"] = True                # COVERAGE
             files = self.files_list
 
         for count, fname in enumerate(files):
             LOG.debug("working on file : %s", fname)
-            branch_coverage["branch_110"] = True                # COVERAGE
             try:
-                branch_coverage["branch_111"] = True            # COVERAGE
                 if fname == "-":
-                    branch_coverage["branch_112"] = True        # COVERAGE
                     open_fd = os.fdopen(sys.stdin.fileno(), "rb", 0)
                     fdata = io.BytesIO(open_fd.read())
-                    for x in new_files_list:                                        # COVERAGE
-                        if x == "-":                                                # COVERAGE
-                            branch_coverage["branch_113"] = True                    # COVERAGE
-                        else:                                                       # COVERAGE
-                            branch_coverage["branch_114"] = True                    # COVERAGE
+
                     new_files_list = [
                         "<stdin>" if x == "-" else x for x in new_files_list
                     ]
@@ -456,11 +447,9 @@ class BanditManager:
                     
     
                 else:
-                    branch_coverage["branch_115"] = True        # COVERAGE
                     with open(fname, "rb") as fdata:
                         self._parse_file(fname, fdata, new_files_list)
             except OSError as e:
-                branch_coverage["branch_116"] = True            # COVERAGE
                 self.skipped.append((fname, e.strerror))
                 new_files_list.remove(fname)
 
